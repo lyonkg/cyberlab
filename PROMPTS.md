@@ -25,3 +25,7 @@ Dernier état connu : CyberLab est livré avec 8 modules, 58 tests verts, le lab
 ## Fifth request — Nov 17, 2026
 
 L'utilisateur veut un lien pour Mac une fois le projet terminé. Livre CyberLab aussi sous forme accessible sur Mac : assure-toi que le build web fonctionne bien sur Safari macOS (y compris les animations et le mode plein écran), et publie un lien Mac dédié sur GitHub Releases (par exemple une page GitHub Pages ou un zip du build optimisé pour Mac). Mentionne les éventuelles limites macOS dans le README. Fais-le après avoir fini tes trois priorités en cours.
+
+## Sixth request — Nov 21, 2026
+
+L'utilisateur veut accéder au zip Mac de CyberLab tout de suite. Publie cyberlab-mac.zip sur un lien téléchargeable public (par exemple GitHub Releases sur le dépôt lyonkg/cyberlab, ou GitHub Pages). Donne-moi l'URL directe du zip Mac dans ta réponse, pour que je puisse la transmettre à l'utilisateur. Si le dépôt n'existe pas encore, crée-le en public, pousse le code, active Pages si possible, et crée une release avec le zip Mac. Réponds avec le lien final dès qu'il est en ligne.
