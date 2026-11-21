@@ -1,0 +1,68 @@
+CyberLab pour Mac — LISEZ-MOI
+==============================
+
+CyberLab est une application web (HTML/JS) optimisée pour Safari sur macOS.
+Ce dossier contient la version compilée, utilisable hors ligne.
+
+DÉMARRAGE RAPIDE
+----------------
+1. Décompressez l'archive (double-clic sur cyberlab-mac.zip).
+2. Double-cliquez sur « Lancer CyberLab.command ».
+   Une fenêtre Terminal s'ouvre (c'est le mini-serveur local) puis Safari
+   affiche CyberLab sur http://127.0.0.1:8765/ (ou le port libre suivant).
+3. Pour arrêter : fermez la fenêtre Terminal (ou Ctrl+C).
+
+PREMIÈRE OUVERTURE : GATEKEEPER
+-------------------------------
+Le script n'est pas signé par un développeur Apple identifié. macOS peut
+donc refuser de l'ouvrir au premier double-clic :
+  • macOS 14 (Sonoma) et antérieur : clic droit (ou Ctrl+clic) sur
+    « Lancer CyberLab.command » > Ouvrir > Ouvrir.
+  • macOS 15 (Sequoia) et suivants : double-cliquez une fois, fermez
+    l'alerte, puis Réglages Système > Confidentialité et sécurité >
+    « Ouvrir quand même ».
+  • Si le Finder indique que le fichier n'est pas exécutable, ouvrez
+    Terminal dans ce dossier et tapez :
+        chmod +x "Lancer CyberLab.command"
+  • Alternative (avancé) : retirer l'attribut de quarantaine :
+        xattr -dr com.apple.quarantine .
+
+SANS LE SCRIPT
+--------------
+Dans Terminal :
+    cd chemin/vers/CyberLab-Mac/app
+    python3 -m http.server 8765 --bind 127.0.0.1
+puis ouvrez http://127.0.0.1:8765/ dans Safari.
+(Python 3 est fourni avec les outils de développement Apple :
+ xcode-select --install)
+
+POURQUOI PAS UN SIMPLE DOUBLE-CLIC SUR index.html ?
+---------------------------------------------------
+Ouvert en file://, Safari bloque les modules JavaScript et la Web Crypto
+(chiffrement AES/PBKDF2) exige un « contexte sécurisé » : https:// ou
+http://localhost / 127.0.0.1. Le mini-serveur local règle les deux.
+
+AJOUTER AU DOCK (Safari 17+, macOS Sonoma ou plus récent)
+--------------------------------------------------------
+Dans Safari : menu Fichier > Ajouter au Dock… CyberLab s'ouvre alors dans
+sa propre fenêtre. Le serveur local doit tourner (lancez d'abord le script),
+ou bien utilisez la version en ligne (GitHub Pages) si elle est publiée.
+
+PLEIN ÉCRAN
+-----------
+Bouton ⤢ en haut à droite (toute l'app) ou « Fullscreen » sur chaque lab.
+Échap pour sortir. Safari affiche brièvement un bandeau « Échap pour
+quitter » : c'est normal. Ctrl+Cmd+F met aussi la fenêtre en plein écran.
+
+LIMITES CONNUES
+---------------
+• Progression enregistrée dans Safari (localStorage) pour cette adresse
+  précise : changer de port (ex. 8766) = progression séparée. Une session
+  de navigation privée ne conserve rien.
+• Les labs fonctionnent en mode simulé. Le mode « outils réels » (ping,
+  traceroute…) nécessite le code source et le serveur Node
+  (npm run dev:all) — voir README.md du projet. macOS peut alors
+  demander l'autorisation d'accès au réseau local.
+• Safari 16 ou plus récent recommandé (macOS 12 Monterey et suivants).
+
+Aucune donnée n'est envoyée sur Internet : tout tourne sur votre Mac.

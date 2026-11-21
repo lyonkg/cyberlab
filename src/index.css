@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-surface: #0b1220;
+  --color-panel: #111827;
+  --color-panel-2: #1a2332;
+  --color-border: #243044;
+  --color-accent: #22d3ee;
+  --color-accent-2: #a78bfa;
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: radial-gradient(1200px 600px at 10% -10%, #164e63 0%, transparent 50%),
+    radial-gradient(900px 500px at 100% 0%, #4c1d95 0%, transparent 45%),
+    var(--color-surface);
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.35);
+}
+
+.glass {
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+}
+
+.prose-lesson p {
+  margin: 0.75rem 0;
+  line-height: 1.65;
+  color: #cbd5e1;
+}
+
+@keyframes packet-move {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(34, 211, 238, 0); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+}
+
+/* Fullscreen: give the lab frame / page an opaque, scrollable canvas.
+   Standard and WebKit selectors MUST stay in separate rules — an unknown
+   pseudo-class in a selector list invalidates the whole rule in Safari. */
+.lab-frame:fullscreen {
+  background: #0b1120;
+  overflow: auto;
+  padding: 2rem;
+  border-radius: 0;
+}
+.lab-frame:-webkit-full-screen {
+  background: #0b1120;
+  overflow: auto;
+  padding: 2rem;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+}
+html:fullscreen {
+  background: #0b1120;
+  overflow: auto;
+}
+html:-webkit-full-screen {
+  background: #0b1120;
+  overflow: auto;
+}
+::backdrop {
+  background: #0b1120;
+}

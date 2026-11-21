@@ -1,0 +1,45 @@
+# Build the macOS bundle and attach it to a GitHub Release when a v* tag is pushed
+# (git tag v1.0.0 && git push origin v1.0.0), or manually from the Actions tab.
+name: Release (macOS zip)
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to create/update (e.g. v1.0.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  mac-zip:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run server:test
+      - name: Build cyberlab-mac.zip (relative base + HashRouter + launcher)
+        run: npm run build:mac -- release/cyberlab-mac.zip
+      - name: Create or update the release and attach the zip
+        run: |
+          PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
+          NOTES=$(printf '%s\n' \
+            "## CyberLab pour Mac" \
+            "" \
+            "- **En ligne (Safari)** : ${PAGES_URL}  — puis Fichier > Ajouter au Dock" \
+            "- **Hors ligne** : téléchargez \`cyberlab-mac.zip\`, décompressez, double-cliquez « Lancer CyberLab.command » (voir LISEZMOI-MAC.txt ; Gatekeeper : clic droit > Ouvrir)." )
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --title "CyberLab $TAG" --notes "$NOTES" --target "$GITHUB_SHA"
+          fi
+          gh release upload "$TAG" release/cyberlab-mac.zip --clobber

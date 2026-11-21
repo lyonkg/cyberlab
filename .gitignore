@@ -1,0 +1,16 @@
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+coverage
+playwright-report
+test-results
+
+# Build outputs / release artifacts (attached to GitHub Releases, never committed)
+dist-mac
+release
+*.zip
+*.tsbuildinfo
