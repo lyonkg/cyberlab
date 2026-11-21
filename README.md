@@ -6,6 +6,13 @@ Interactive cybersecurity learning platform — lessons, live simulations, and q
 
 Optionally installable as a lightweight PWA (`public/manifest.webmanifest`).
 
+## Live links
+
+- **Web app (GitHub Pages, works in Safari):** https://lyonkg.github.io/cyberlab/
+- **Mac download (latest release):** https://github.com/lyonkg/cyberlab/releases/latest/download/cyberlab-mac.zip
+- **Release v1.0.0:** https://github.com/lyonkg/cyberlab/releases/tag/v1.0.0
+- **Source:** https://github.com/lyonkg/cyberlab
+
 ## Features
 
 ### Modules
@@ -203,7 +210,7 @@ VITE_BASE=/cyberlab/ npx vite preview     # → http://localhost:4173/cyberlab/
 
 The PWA manifest uses relative `start_url`/`scope`/icons, so it is correct under any base.
 
-### GitHub Pages (workflow included, not yet enabled)
+### GitHub Pages (live at https://lyonkg.github.io/cyberlab/)
 
 `.github/workflows/pages.yml` runs the tests, builds with `VITE_BASE=/<repo-name>/` and deploys to Pages on every push to `main`. One-time setup by the repo owner: **Settings → Pages → Source: GitHub Actions**. On free GitHub plans Pages only works for **public** repositories. The site is then at `https://<owner>.github.io/<repo>/` (for a user site `<owner>.github.io` or a custom domain, change `VITE_BASE` to `/` in the workflow).
 
@@ -233,9 +240,9 @@ CyberLab is tested against **WebKit 27.2 with Playwright's *Desktop Safari* prof
 
 ### Three ways to use it on a Mac
 
-1. **Online (once Pages is enabled):** open `https://<owner>.github.io/<repo>/` in Safari.
+1. **Online:** open https://lyonkg.github.io/cyberlab/ in Safari.
 2. **Add to Dock (Safari 17+, macOS Sonoma+):** with the site open, choose **File → Add to Dock…**. CyberLab then opens in its own window with its icon (`apple-touch-icon.png`, `apple-mobile-web-app-*` meta and a `display: standalone` manifest are included). On iPhone/iPad use **Share → Add to Home Screen**.
-3. **Offline zip, `cyberlab-mac.zip`** (from the GitHub Release, or build it with `npm run build:mac`):
+3. **Offline zip, `cyberlab-mac.zip`** ([download](https://github.com/lyonkg/cyberlab/releases/latest/download/cyberlab-mac.zip) from the GitHub Release, or build it with `npm run build:mac`):
    ```
    CyberLab-Mac/
    ├── Lancer CyberLab.command   # double-click: starts python3 -m http.server on 127.0.0.1 and opens Safari
