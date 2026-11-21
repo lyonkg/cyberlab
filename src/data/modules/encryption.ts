@@ -2,10 +2,10 @@ import type { ModuleMeta } from '../../types'
 
 export const ENCRYPTION_MODULE: ModuleMeta = {
     id: 'encryption',
-    title: 'Encryption & Hashing',
-    shortTitle: 'Encryption',
+    title: 'Chiffrement et hachage',
+    shortTitle: 'Chiffrement',
     description:
-      'Classical ciphers, symmetric vs asymmetric crypto, Web Crypto AES demos, and hashing with salts.',
+      'Chiffrements classiques, cryptographie symétrique et asymétrique, démos AES avec Web Crypto et hachage avec sel.',
     icon: 'Lock',
     path: '/modules/encryption',
     color: 'violet',
@@ -13,67 +13,67 @@ export const ENCRYPTION_MODULE: ModuleMeta = {
     lessons: [
       {
         id: 'enc-intro',
-        title: 'Confidentiality, integrity, authenticity',
+        title: 'Confidentialité, intégrité, authenticité',
         content:
-          'Encryption protects confidentiality. Hashing supports integrity checks. Digital signatures and MACs provide authenticity. Real systems combine these primitives carefully.',
+          'Le chiffrement protège la confidentialité. Le hachage permet de vérifier l’intégrité. Les signatures numériques et les MAC garantissent l’authenticité. Les vrais systèmes combinent ces briques avec soin.',
       },
       {
         id: 'enc-sym-asym',
-        title: 'Symmetric vs asymmetric',
+        title: 'Symétrique ou asymétrique',
         content:
-          'Symmetric crypto (AES) uses one shared key — fast, great for bulk data. Asymmetric crypto (RSA, ECC) uses key pairs — slower, great for key exchange and signatures. TLS uses both.',
+          'La cryptographie symétrique (AES) utilise une seule clé partagée : rapide, idéale pour de gros volumes. La cryptographie asymétrique (RSA, ECC) utilise des paires de clés : plus lente, idéale pour l’échange de clés et les signatures. TLS utilise les deux.',
       },
       {
         id: 'enc-kdf',
-        title: 'Turning passphrases into keys',
+        title: 'Transformer une phrase secrète en clé',
         content:
-          'A human passphrase is not a key. Use a key-derivation function such as PBKDF2 (hundreds of thousands of iterations), scrypt, or Argon2 with a random salt to stretch it into a 256-bit key, so guessing is slow and identical passphrases yield different keys. AES-GCM then needs a unique random 12-byte IV (nonce) per message — reusing an IV with the same key breaks GCM. Salt and IV are public and stored with the ciphertext; only the passphrase is secret.',
+          'Une phrase secrète humaine n’est pas une clé. Utilisez une fonction de dérivation de clé comme PBKDF2 (des centaines de milliers d’itérations), scrypt ou Argon2 avec un salt aléatoire pour l’étirer en clé de 256 bits : deviner devient lent et deux phrases identiques donnent des clés différentes. AES-GCM exige ensuite un IV (nonce) aléatoire unique de 12 octets par message — réutiliser un IV avec la même clé casse GCM. Le salt et l’IV sont publics et stockés avec le texte chiffré ; seule la phrase secrète est secrète.',
       },
       {
         id: 'enc-hash',
-        title: 'Hashing & salting',
+        title: 'Hachage et salage',
         content:
-          'A cryptographic hash is one-way. For passwords, always salt (unique random per user) and use a slow KDF (bcrypt/scrypt/Argon2). Never store plaintext or unsalted SHA-256 of passwords.',
+          'Un hash cryptographique est à sens unique. Pour les mots de passe, ajoutez toujours un salt (aléatoire et unique par utilisateur) et utilisez une KDF lente (bcrypt/scrypt/Argon2). Ne stockez jamais un mot de passe en clair ni son SHA-256 sans salt.',
       },
     ],
     quiz: [
       {
         id: 'eq1',
-        prompt: 'AES is an example of:',
-        choices: ['Asymmetric encryption', 'Symmetric encryption', 'A hashing algorithm', 'A firewall'],
+        prompt: 'AES est un exemple de :',
+        choices: ['Chiffrement asymétrique', 'Chiffrement symétrique', 'Algorithme de hachage', 'Pare-feu'],
         correctIndex: 1,
-        explanation: 'AES uses the same secret key to encrypt and decrypt.',
+        explanation: 'AES utilise la même clé secrète pour chiffrer et déchiffrer.',
       },
       {
         id: 'eq2',
-        prompt: 'Why salt password hashes?',
+        prompt: 'Pourquoi saler les hash de mots de passe ?',
         choices: [
-          'To make hashes shorter',
-          'To prevent identical passwords from producing identical hashes / defeat rainbow tables',
-          'To encrypt the password reversibly',
-          'To speed up login',
+          'Pour raccourcir les hash',
+          'Pour que des mots de passe identiques ne donnent pas le même hash / contrer les rainbow tables',
+          'Pour chiffrer le mot de passe de façon réversible',
+          'Pour accélérer la connexion',
         ],
         correctIndex: 1,
-        explanation: 'Unique salts mean precomputed rainbow tables no longer map hash→password across users.',
+        explanation: 'Avec un salt unique, les rainbow tables précalculées ne permettent plus de retrouver hash → mot de passe d’un utilisateur à l’autre.',
       },
       {
         id: 'eq4',
-        prompt: 'When encrypting with a passphrase using AES-GCM, which is correct?',
+        prompt: 'Pour chiffrer avec une phrase secrète en AES-GCM, quelle méthode est correcte ?',
         choices: [
-          'Use the passphrase bytes directly as the key and a fixed IV',
-          'Derive the key with PBKDF2/Argon2 and a random salt, and use a fresh random IV per message',
-          'Keep the IV secret and reuse it to save space',
-          'Hash the passphrase once with MD5',
+          'Utiliser directement les octets de la phrase comme clé, avec un IV fixe',
+          'Dériver la clé avec PBKDF2/Argon2 et un salt aléatoire, et utiliser un nouvel IV aléatoire par message',
+          'Garder l’IV secret et le réutiliser pour gagner de la place',
+          'Hacher la phrase une seule fois en MD5',
         ],
         correctIndex: 1,
-        explanation: 'A slow salted KDF resists guessing; a unique IV per message is required for GCM security. Salt and IV can be stored in the clear.',
+        explanation: 'Une KDF lente avec salt résiste aux essais ; un IV unique par message est indispensable à la sécurité de GCM. Le salt et l’IV peuvent être stockés en clair.',
       },
       {
         id: 'eq3',
-        prompt: 'Caesar cipher security today is:',
-        choices: ['Military-grade', 'Broken by trivial brute force (26 keys)', 'Quantum-resistant', 'Used in TLS 1.3'],
+        prompt: 'Aujourd’hui, la sécurité du chiffrement de César est :',
+        choices: ['De niveau militaire', 'Cassée par une force brute triviale (26 clés)', 'Résistante au quantique', 'Utilisée dans TLS 1.3'],
         correctIndex: 1,
-        explanation: 'Only 26 shifts — useful for teaching, useless for real secrecy.',
+        explanation: 'Seulement 26 décalages : utile pour apprendre, inutile pour un vrai secret.',
       },
     ],
 }

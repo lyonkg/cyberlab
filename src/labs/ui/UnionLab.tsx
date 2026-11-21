@@ -9,24 +9,24 @@ import { useProgress } from '../../hooks/useProgress'
 import { LIMITS, clampLength } from '../../lib/validation'
 
 const PAYLOADS: { label: string; input: string; note: string }[] = [
-  { label: 'ORDER BY 1', input: "' ORDER BY 1 --", note: 'Probe: column 1 exists → OK' },
-  { label: 'ORDER BY 2', input: "' ORDER BY 2 --", note: 'Probe: column 2 exists → OK' },
-  { label: 'ORDER BY 3', input: "' ORDER BY 3 --", note: 'Probe: column 3 exists → OK (matches schema)' },
-  { label: 'ORDER BY 4', input: "' ORDER BY 4 --", note: 'Probe: out of range → error (column count is 3)' },
+  { label: 'ORDER BY 1', input: "' ORDER BY 1 --", note: 'Sonde : la colonne 1 existe → OK' },
+  { label: 'ORDER BY 2', input: "' ORDER BY 2 --", note: 'Sonde : la colonne 2 existe → OK' },
+  { label: 'ORDER BY 3', input: "' ORDER BY 3 --", note: 'Sonde : la colonne 3 existe → OK (correspond au schéma)' },
+  { label: 'ORDER BY 4', input: "' ORDER BY 4 --", note: 'Sonde : hors limites → erreur (il y a 3 colonnes)' },
   {
-    label: 'UNION 2 cols',
+    label: 'UNION 2 colonnes',
     input: "' UNION SELECT username, password FROM users --",
-    note: 'Too few columns (2 ≠ 3) → error',
+    note: 'Pas assez de colonnes (2 ≠ 3) → erreur',
   },
   {
-    label: 'UNION 4 cols',
+    label: 'UNION 4 colonnes',
     input: "' UNION SELECT null, null, null, null FROM users --",
-    note: 'Too many columns (4 ≠ 3) → error',
+    note: 'Trop de colonnes (4 ≠ 3) → erreur',
   },
   {
-    label: 'UNION leak',
+    label: 'Fuite par UNION',
     input: "' UNION SELECT null, username, password FROM users --",
-    note: '3 columns: null→id, username→title, password→body',
+    note: '3 colonnes : null→id, username→title, password→body',
   },
 ]
 
@@ -56,7 +56,7 @@ export function UnionLab() {
   return (
     <div className="space-y-4" data-testid="lab-sqli-union">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">UNION Attack Lab — Product Search</h3>
+        <h3 className="font-semibold text-white">Lab d’attaque UNION — recherche de produits</h3>
         <label className="flex items-center gap-2 text-sm cursor-pointer">
           <input
             type="checkbox"
@@ -67,21 +67,21 @@ export function UnionLab() {
             }}
           />
           <span className={vulnerable ? 'text-rose-300' : 'text-emerald-300'}>
-            {vulnerable ? 'Vulnerable (string concat)' : 'Safe (parameterized)'}
+            {vulnerable ? 'Vulnérable (concaténation de chaînes)' : 'Sécurisé (requête paramétrée)'}
           </span>
         </label>
       </div>
 
       <p className="text-sm text-slate-400">
-        The app runs{' '}
+        L’application exécute{' '}
         <code className="text-cyan-300">
           SELECT id, title, body FROM products WHERE title LIKE &apos;%…%&apos;
         </code>{' '}
-        — <strong className="text-slate-200">{PRODUCT_COLUMN_COUNT} columns</strong> (
-        {PRODUCT_COLUMNS.join(', ')}). Close the string with a quote, then append{' '}
-        <code className="text-cyan-300">ORDER BY n --</code> to probe the count, or{' '}
-        <code className="text-cyan-300">UNION SELECT …</code> with exactly {PRODUCT_COLUMN_COUNT}{' '}
-        expressions to append rows from another table.
+        — <strong className="text-slate-200">{PRODUCT_COLUMN_COUNT} colonnes</strong> (
+        {PRODUCT_COLUMNS.join(', ')}). Fermez la chaîne avec une apostrophe, puis ajoutez{' '}
+        <code className="text-cyan-300">ORDER BY n --</code> pour sonder le nombre de colonnes, ou{' '}
+        <code className="text-cyan-300">UNION SELECT …</code> avec exactement {PRODUCT_COLUMN_COUNT}{' '}
+        expressions pour ajouter des lignes d’une autre table.
       </p>
 
       <div className="flex flex-wrap gap-2">
@@ -100,7 +100,7 @@ export function UnionLab() {
 
       <form onSubmit={onSubmit} className="glass rounded-xl p-4 space-y-3 max-w-xl">
         <label className="block text-xs text-slate-400">
-          Search products by title
+          Rechercher des produits par titre
           <input
             className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono"
             value={input}
@@ -109,12 +109,12 @@ export function UnionLab() {
               setSubmitted(false)
             }}
             maxLength={LIMITS.sqlInput}
-            placeholder="e.g. Patch  or  ' UNION SELECT null, username, password FROM users --"
+            placeholder="ex. Patch  ou  ' UNION SELECT null, username, password FROM users --"
             autoComplete="off"
           />
         </label>
         <button type="submit" className="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold">
-          Search
+          Rechercher
         </button>
       </form>
 
@@ -122,20 +122,20 @@ export function UnionLab() {
         <div className="space-y-3">
           <div className="glass rounded-xl p-3 space-y-2">
             <div>
-              <p className="text-xs text-slate-400 mb-1">Constructed query</p>
+              <p className="text-xs text-slate-400 mb-1">Requête construite</p>
               <pre className="text-xs font-mono text-amber-200 whitespace-pre-wrap break-all">{result.query}</pre>
             </div>
             {result.vulnerable && (
               <div>
-                <p className="text-xs text-slate-400 mb-1">SQL the DB evaluates (comments removed)</p>
+                <p className="text-xs text-slate-400 mb-1">SQL évalué par la base (commentaires retirés)</p>
                 <pre className="text-xs font-mono text-cyan-200 whitespace-pre-wrap break-all">
                   {result.effectiveSql}
                 </pre>
               </div>
             )}
             <p className="text-[11px] text-slate-500">
-              Left SELECT column count: {result.columnCount} · injection chars:{' '}
-              {result.injectionDetected ? 'yes' : 'no'}
+              Colonnes du SELECT de gauche : {result.columnCount} · caractères d’injection :{' '}
+              {result.injectionDetected ? 'oui' : 'non'}
             </p>
           </div>
 
@@ -163,7 +163,7 @@ export function UnionLab() {
                         {c}
                       </th>
                     ))}
-                    <th className="p-2 text-left">source</th>
+                    <th className="p-2 text-left">origine</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -187,7 +187,7 @@ export function UnionLab() {
                         ))}
                         <td className="p-2">
                           {leaked ? (
-                            <span className="text-rose-300 font-semibold">leaked (UNION)</span>
+                            <span className="text-rose-300 font-semibold">fuite (UNION)</span>
                           ) : (
                             <span className="text-slate-500">products</span>
                           )}
@@ -204,7 +204,7 @@ export function UnionLab() {
 
       <details className="text-xs text-slate-500">
         <summary>
-          Demo tables — products ({DEMO_PRODUCTS.length} rows, {PRODUCT_COLUMN_COUNT} cols) &amp; users
+          Tables de démo — products ({DEMO_PRODUCTS.length} lignes, {PRODUCT_COLUMN_COUNT} colonnes) et users
         </summary>
         <pre className="mt-2 font-mono overflow-x-auto">{JSON.stringify(DEMO_PRODUCTS, null, 2)}</pre>
       </details>

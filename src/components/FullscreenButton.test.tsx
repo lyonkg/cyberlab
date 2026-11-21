@@ -34,15 +34,15 @@ describe('FullscreenButton', () => {
 
     render(<FullscreenButton />)
     const btn = screen.getByTestId('fullscreen-toggle')
-    expect(btn).toHaveAttribute('aria-label', 'Enter fullscreen')
+    expect(btn).toHaveAttribute('aria-label', 'Passer en plein écran')
 
     await act(async () => fireEvent.click(btn))
     expect(root.webkitRequestFullscreen).toHaveBeenCalled()
-    expect(btn).toHaveAttribute('aria-label', 'Exit fullscreen')
+    expect(btn).toHaveAttribute('aria-label', 'Quitter le plein écran')
     expect(btn).toHaveAttribute('aria-pressed', 'true')
 
     await act(async () => fireEvent.click(btn))
     expect(doc.webkitExitFullscreen).toHaveBeenCalled()
-    expect(btn).toHaveAttribute('aria-label', 'Enter fullscreen')
+    expect(btn).toHaveAttribute('aria-label', 'Passer en plein écran')
   })
 })

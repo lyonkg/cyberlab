@@ -3,14 +3,14 @@ import { DEMO_ORDERS, ORDER_COLUMN_COUNT, simulateOrderLookup } from '../../lib/
 import { useProgress } from '../../hooks/useProgress'
 
 const PAYLOADS = [
-  { label: '1001', input: '1001', note: 'Legitimate order id (alice)' },
-  { label: "' OR 1=1 --", input: "' OR 1=1 --", note: 'Widen the JOIN — every customer order leaks' },
+  { label: '1001', input: '1001', note: 'Numéro de commande légitime (alice)' },
+  { label: "' OR 1=1 --", input: "' OR 1=1 --", note: 'Élargir le JOIN — toutes les commandes clients fuient' },
   {
     label: "' UNION SELECT…",
     input: "' UNION SELECT null, username, password, role FROM users --",
-    note: 'UNION against the 4-column JOIN result',
+    note: 'UNION contre le résultat du JOIN à 4 colonnes',
   },
-  { label: "admin' --", input: "admin' --", note: 'Syntax/type noise — useful for error messages' },
+  { label: "admin' --", input: "admin' --", note: 'Bruit de syntaxe/type — utile pour provoquer des messages d’erreur' },
 ]
 
 export function JoinLab() {
@@ -32,7 +32,7 @@ export function JoinLab() {
   return (
     <div className="space-y-4" data-testid="lab-sqli-join">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">JOIN Attack Lab — Order Lookup</h3>
+        <h3 className="font-semibold text-white">Lab d’attaque JOIN — suivi de commande</h3>
         <label className="flex items-center gap-2 text-sm cursor-pointer">
           <input
             type="checkbox"
@@ -43,16 +43,16 @@ export function JoinLab() {
             }}
           />
           <span className={vulnerable ? 'text-rose-300' : 'text-emerald-300'}>
-            {vulnerable ? 'Vulnerable (string concat)' : 'Safe (parameterized)'}
+            {vulnerable ? 'Vulnérable (concaténation de chaînes)' : 'Sécurisé (requête paramétrée)'}
           </span>
         </label>
       </div>
       <p className="text-sm text-slate-400">
-        The page runs a multi-table query (
-        <code className="text-cyan-300">orders o INNER JOIN users u</code>) and filters by order id —{' '}
-        <strong className="text-slate-200">{ORDER_COLUMN_COUNT} result columns</strong>. Closing the string
-        with <code className="text-cyan-300">&apos; OR 1=1 --</code> returns every customer&apos;s order and
-        shipping address through the JOIN.
+        La page exécute une requête multi-tables (
+        <code className="text-cyan-300">orders o INNER JOIN users u</code>) et filtre par numéro de commande —{' '}
+        <strong className="text-slate-200">{ORDER_COLUMN_COUNT} colonnes de résultat</strong>. Fermer la chaîne
+        avec <code className="text-cyan-300">&apos; OR 1=1 --</code> renvoie, via le JOIN, la commande et l’adresse
+        de livraison de chaque client.
       </p>
       <div className="flex flex-wrap gap-2">
         {PAYLOADS.map((p) => (
@@ -75,7 +75,7 @@ export function JoinLab() {
         className="glass rounded-xl p-4 space-y-3 max-w-xl"
       >
         <label className="block text-xs text-slate-400">
-          Order id
+          Numéro de commande
           <input
             className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono"
             value={input}
@@ -87,9 +87,9 @@ export function JoinLab() {
           />
         </label>
         <button type="submit" className="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold">
-          Look up
+          Rechercher
         </button>
-        <p className="text-[11px] text-slate-500">Demo ids: {DEMO_ORDERS.map((o) => o.id).join(', ')}</p>
+        <p className="text-[11px] text-slate-500">Numéros de démo : {DEMO_ORDERS.map((o) => o.id).join(', ')}</p>
       </form>
       {result && <ResultPanel result={result} />}
     </div>
@@ -105,12 +105,12 @@ function ResultPanel({
     <div className="space-y-3">
       <div className="glass rounded-xl p-3 space-y-2">
         <div>
-          <p className="text-xs text-slate-400 mb-1">Constructed query</p>
+          <p className="text-xs text-slate-400 mb-1">Requête construite</p>
           <pre className="text-xs font-mono text-amber-200 whitespace-pre-wrap break-all">{result.query}</pre>
         </div>
         {result.vulnerable && (
           <div>
-            <p className="text-xs text-slate-400 mb-1">SQL the DB evaluates (comments removed)</p>
+            <p className="text-xs text-slate-400 mb-1">SQL évalué par la base (commentaires retirés)</p>
             <pre className="text-xs font-mono text-cyan-200 whitespace-pre-wrap break-all">
               {result.effectiveSql}
             </pre>

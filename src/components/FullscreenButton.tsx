@@ -15,7 +15,7 @@ export function FullscreenButton({ target, testId = 'fullscreen-toggle', showLab
   const { supported, active, toggle } = useFullscreen(target)
   // iPhone Safari and some embedded webviews have no element fullscreen: hide rather than show a dead button.
   if (!supported) return null
-  const label = active ? 'Exit fullscreen' : target ? 'Lab fullscreen' : 'Enter fullscreen'
+  const label = active ? 'Quitter le plein écran' : target ? 'Lab en plein écran' : 'Passer en plein écran'
   const Icon = active ? Minimize2 : Maximize2
   return (
     <button
@@ -23,12 +23,12 @@ export function FullscreenButton({ target, testId = 'fullscreen-toggle', showLab
       onClick={() => void toggle()}
       aria-label={label}
       aria-pressed={active}
-      title={`${label} (Esc to leave)`}
+      title={`${label} (Échap pour quitter)`}
       data-testid={testId}
       className={`inline-flex items-center gap-1.5 p-2 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white ${className}`}
     >
       <Icon className="h-4 w-4" />
-      {showLabel && <span className="text-xs">{active ? 'Exit fullscreen' : 'Fullscreen'}</span>}
+      {showLabel && <span className="text-xs">{active ? 'Quitter le plein écran' : 'Plein écran'}</span>}
     </button>
   )
 }

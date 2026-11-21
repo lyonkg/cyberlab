@@ -20,7 +20,7 @@ async function apiGet<T>(path: string, query: Record<string, string | number>): 
   const base = apiBase()
   if (!isAllowedLabApiBase(base)) {
     throw new Error(
-      'Lab API base is not allowed. Use http://127.0.0.1:8787 (or localhost) or an https:// URL.',
+      'Adresse de l’API de lab non autorisée. Utilisez http://127.0.0.1:8787 (ou localhost) ou une URL https://.',
     )
   }
   const url = resolveLabApiUrl(path, base)
@@ -30,21 +30,21 @@ async function apiGet<T>(path: string, query: Record<string, string | number>): 
     res = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(15_000) })
   } catch (e) {
     throw new Error(
-      `Lab API unreachable at ${base} (${e instanceof Error ? e.message : String(e)}). Start it with: npm run server`,
+      `API de lab injoignable à ${base} (${e instanceof Error ? e.message : String(e)}). Démarrez-la avec : npm run server`,
     )
   }
   const body = await res.json().catch(() => ({}))
   if (!res.ok) {
-    throw new Error(typeof body.error === 'string' ? body.error : `Lab API HTTP ${res.status}`)
+    throw new Error(typeof body.error === 'string' ? body.error : `API de lab : erreur HTTP ${res.status}`)
   }
   return body as T
 }
 
 export const realProvider: LabProvider = {
   mode: 'real',
-  name: 'Real Lab Provider (local API)',
+  name: 'fournisseur de labs réel (API locale)',
   description:
-    'Calls the local CyberLab lab API (npm run server) for ping, traceroute, DNS, HTTP headers/TLS, and port checks. Falls back with a clear error if the server is down.',
+    'Appelle l’API de lab locale de CyberLab (npm run server) pour ping, traceroute, DNS, en-têtes HTTP/TLS et tests de port. Affiche une erreur claire si le serveur est arrêté.',
   async capturePackets(): Promise<PacketCaptureResult> {
     // Still simulated — real pcap needs privileges we do not grant the teaching API.
     const now = Date.now()
@@ -53,7 +53,7 @@ export const realProvider: LabProvider = {
       packets: [
         {
           timestamp: now,
-          summary: 'Real mode: packet capture is not exposed by the local API (needs root/pcap).',
+          summary: 'Mode réel : la capture de paquets n’est pas exposée par l’API locale (nécessite root/pcap).',
           raw: 'N/A',
         },
       ],

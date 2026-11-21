@@ -38,9 +38,9 @@ describe('JOIN', () => {
     expect(r.rows).toHaveLength(1)
     expect(r.rows[0]).toMatchObject({
       id: 1001,
-      item: 'Hardware security key',
+      item: 'Clé de sécurité matérielle',
       username: 'alice',
-      ship_to: '12 Rabbit Hole Ln',
+      ship_to: '12 allée du Terrier',
     })
   })
 

@@ -52,8 +52,8 @@ export async function encryptAesGcm(
   passphrase: string,
   iterations = PBKDF2_ITERATIONS,
 ): Promise<AesEnvelope> {
-  if (plaintext.length > LIMITS.aesPlain) throw new Error('plaintext too long')
-  if (passphrase.length > LIMITS.passphrase) throw new Error('passphrase too long')
+  if (plaintext.length > LIMITS.aesPlain) throw new Error('texte en clair trop long')
+  if (passphrase.length > LIMITS.passphrase) throw new Error('phrase secrète trop longue')
   const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES))
   const iv = crypto.getRandomValues(new Uint8Array(IV_BYTES))
   const key = await deriveKey(passphrase, salt, iterations)
@@ -78,10 +78,10 @@ export async function decryptAesGcm(
   passphrase: string,
   iterations = PBKDF2_ITERATIONS,
 ): Promise<string> {
-  if (packedB64.length > 24_000) throw new Error('ciphertext too long')
-  if (passphrase.length > LIMITS.passphrase) throw new Error('passphrase too long')
+  if (packedB64.length > 24_000) throw new Error('texte chiffré trop long')
+  if (passphrase.length > LIMITS.passphrase) throw new Error('phrase secrète trop longue')
   const raw = fromB64(packedB64)
-  if (raw.length < SALT_BYTES + IV_BYTES + 16) throw new Error('ciphertext too short')
+  if (raw.length < SALT_BYTES + IV_BYTES + 16) throw new Error('texte chiffré trop court')
   const salt = raw.slice(0, SALT_BYTES)
   const iv = raw.slice(SALT_BYTES, SALT_BYTES + IV_BYTES)
   const data = raw.slice(SALT_BYTES + IV_BYTES)

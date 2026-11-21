@@ -1,125 +1,130 @@
 # CyberLab
 
-Interactive cybersecurity learning platform — lessons, live simulations, and quizzes that run entirely in the browser. No paid API keys or real infrastructure required.
+Plateforme interactive d’apprentissage de la cybersécurité : leçons, simulations en direct et quiz, le tout dans le navigateur. Aucune clé d’API payante ni infrastructure réelle n’est nécessaire.
 
-**Stack:** React 19 · TypeScript · Vite 8 · Tailwind CSS v4 · Vitest · Recharts · Lucide icons
+**Interface entièrement en français** (depuis la v1.1.0). Le code, les requêtes SQL, les payloads et les termes techniques usuels (hash, salt, IV, UNION, JOIN, TLS…) restent en anglais.
 
-Optionally installable as a lightweight PWA (`public/manifest.webmanifest`).
+**Stack :** React 19 · TypeScript · Vite 8 · Tailwind CSS v4 · Vitest · Recharts · icônes Lucide
 
-## Live links
+Installable en option comme PWA légère (`public/manifest.webmanifest`).
 
-- **Web app (GitHub Pages, works in Safari):** https://lyonkg.github.io/cyberlab/
-- **Mac download (latest release):** https://github.com/lyonkg/cyberlab/releases/latest/download/cyberlab-mac.zip
-- **Release v1.0.0:** https://github.com/lyonkg/cyberlab/releases/tag/v1.0.0
-- **Source:** https://github.com/lyonkg/cyberlab
+## Liens en ligne
 
-## Features
+- **Application web (GitHub Pages, compatible Safari) :** https://lyonkg.github.io/cyberlab/
+- **Téléchargement Mac (dernière release) :** https://github.com/lyonkg/cyberlab/releases/latest/download/cyberlab-mac.zip
+- **Release v1.1.0 (interface en français) :** https://github.com/lyonkg/cyberlab/releases/tag/v1.1.0
+- **Release v1.0.0 :** https://github.com/lyonkg/cyberlab/releases/tag/v1.0.0
+- **Code source :** https://github.com/lyonkg/cyberlab
+
+## Fonctionnalités
 
 ### Modules
-| Module | Lessons | Interactive labs |
-|--------|---------|------------------|
-| **Network Security** | Layers, firewalls | Topology diagram, firewall rule lab, packet-flow animation, TCP handshake |
-| **Encryption & Hashing** | Symmetric/asymmetric, key derivation, hashing | Caesar/Vigenère playground, AES-256-GCM with PBKDF2-derived key (Web Crypto; shows salt, IV, iterations), hashing + salting |
-| **Phishing** | Social engineering | Spot-the-phish email lab |
-| **Malware** | Worms & containment | Infection spread on a network graph |
-| **DDoS** | Availability attacks | Live RPS chart with rate-limit / CDN toggles |
-| **MITM** | HTTP vs HTTPS | Alice / Bob / Mallory animation |
-| **SQL Injection** | Concat vs parameters, precedence, UNION, JOIN, subqueries, functions | Login · UNION search · JOIN order-lookup · blind boolean/EXISTS labs; parameterized toggle on each |
-| **Defense Basics** | MFA, patching, least privilege | Password strength checker, defense-in-depth checklist |
+| Module | Leçons | Labs interactifs |
+|--------|--------|------------------|
+| **Sécurité réseau** | Couches, pare-feu | Schéma de topologie, lab de règles de pare-feu, animation du flux de paquets, handshake TCP |
+| **Chiffrement et hachage** | Symétrique/asymétrique, dérivation de clé, hachage | Atelier César/Vigenère, AES-256-GCM avec clé dérivée par PBKDF2 (Web Crypto ; affiche salt, IV, itérations), hachage + salage |
+| **Attaques de phishing** | Ingénierie sociale | Lab « repérez le phishing » sur des e-mails |
+| **Malware et propagation** | Vers et confinement | Propagation d’une infection sur un graphe réseau |
+| **Attaques DDoS** | Attaques sur la disponibilité | Graphique de requêtes/s en direct avec limitation de débit / CDN |
+| **Homme du milieu (MITM)** | HTTP contre HTTPS | Animation Alice / Bob / Mallory |
+| **Injection SQL** | Concaténation contre paramètres, priorité des opérateurs, UNION, JOIN, sous-requêtes, fonctions | Labs connexion · recherche UNION · suivi de commande JOIN · aveugle booléen/EXISTS ; interrupteur « requêtes paramétrées » sur chacun |
+| **Bases de la défense** | MFA, correctifs, moindre privilège | Testeur de robustesse de mot de passe, check-list de défense en profondeur |
 
-### Cross-cutting
-- Quizzes with immediate feedback and explanations
-- Progress tracking in `localStorage`
-- Lab provider interface: `simulated` (default) ↔ `real` (stub) via `VITE_LAB_MODE`
+### Transversal
+- Quiz avec correction immédiate et explications
+- Suivi de la progression dans `localStorage`
+- Interface de fournisseur de labs : `simulated` (par défaut) ↔ `real` (API locale), via `VITE_LAB_MODE` ou la page **Outils**
 
-## Prerequisites
+## Prérequis
 
-- Node.js 20+ (18+ may work)
+- Node.js 20+ (18+ peut fonctionner)
 - npm 10+
 
-## Install
+## Installation
 
 ```bash
 cd cyberlab
 npm install
 ```
 
-## Run (development)
+## Lancer (développement)
 
 ```bash
 npm run dev
 ```
 
-Open the URL Vite prints (usually `http://localhost:5173`).
+Ouvrez l’URL affichée par Vite (en général `http://localhost:5173`).
 
-## Build
+## Compiler
 
 ```bash
 npm run build
 ```
 
-Output goes to `dist/`. Routes and each lab are lazy-loaded, so the first page only downloads the entry and React vendor chunks (~95 KB gzip). Recharts (`charts-*.js`) loads only when you open the DDoS lab.
+Le résultat est dans `dist/`. Les routes et chaque lab sont chargés à la demande : la première page ne télécharge que le point d’entrée et les chunks React (~95 Ko gzip). Recharts (`charts-*.js`) ne se charge qu’à l’ouverture du lab DDoS.
 
 ```bash
-VITE_BASE=/cyberlab/ npm run build   # sub-path build (GitHub Pages project site)
-npm run build:mac                    # macOS bundle → release/cyberlab-mac.zip (see "macOS / Safari")
+VITE_BASE=/cyberlab/ npm run build   # build sous un sous-chemin (site de projet GitHub Pages)
+npm run build:mac                    # paquet macOS → release/cyberlab-mac.zip (voir « macOS / Safari »)
 ```
 
-## Preview production build
+## Prévisualiser le build de production
 
 ```bash
 npm run preview
 ```
 
-## Test
+## Tests
 
 ```bash
 npm test
 ```
 
-Unit tests (Vitest) cover the fullscreen helpers (standard + WebKit-prefixed API) and button, router/base selection, ciphers, firewall, the SQL engine (WHERE, UNION, ORDER BY, LIKE, JOIN, subqueries, functions), login/search/JOIN/blind simulators, AES-GCM + PBKDF2, providers/mode switching, quiz scoring, password strength, and input validation. Server validators run with `npm run server:test` (node:test).
+Les tests unitaires (Vitest) couvrent les helpers de plein écran (API standard + préfixée WebKit) et le bouton, le choix du routeur/de la base, les chiffrements classiques, le pare-feu, le moteur SQL (WHERE, UNION, ORDER BY, LIKE, JOIN, sous-requêtes, fonctions), les simulateurs connexion/recherche/JOIN/aveugle, AES-GCM + PBKDF2, les fournisseurs et le changement de mode, la notation des quiz, la robustesse des mots de passe et la validation des saisies. Les validateurs du serveur se testent avec `npm run server:test` (node:test).
 
-## SQL injection lab: how the simulator works
+## Lab d’injection SQL : fonctionnement du simulateur
 
-In vulnerable mode the login builds `SELECT * FROM users WHERE username = '<u>' AND password = '<p>'` by string concatenation and runs it through a small SQL engine (`src/lib/sqli.ts`) that follows real SQL rules:
+En mode vulnérable, la connexion construit `SELECT * FROM users WHERE username = '<u>' AND password = '<p>'` par concaténation de chaînes et l’exécute dans un petit moteur SQL (`src/lib/sqli.ts`) qui respecte les vraies règles SQL :
 
-- `--` starts a comment (outside string literals); `''` is an escaped quote
-- precedence is `NOT` > `AND` > `OR`; parentheses work
-- an unbalanced quote is a syntax error; stacked queries (`; DROP …`) are refused
+- `--` ouvre un commentaire (hors des chaînes littérales) ; `''` est une apostrophe échappée
+- la priorité est `NOT` > `AND` > `OR` ; les parenthèses fonctionnent
+- une apostrophe non fermée est une erreur de syntaxe ; les requêtes empilées (`; DROP …`) sont refusées
 
-| Username | Password | Vulnerable result |
-|----------|----------|-------------------|
-| `' OR 1=1 --` | anything | Bypass — returns all users |
-| `admin' --` | anything | Bypass — logs in as admin |
-| `' OR '1'='1` | `x` | **Fails** — parses as `username='' OR ('1'='1' AND password='x')` |
-| `' OR '1'='1` | `' OR '1'='1` | Bypass — the tautology is in both fields |
-| `'` | anything | Syntax error (shows why error leakage matters) |
+| Nom d’utilisateur | Mot de passe | Résultat en mode vulnérable |
+|-------------------|--------------|-----------------------------|
+| `' OR 1=1 --` | n’importe quoi | Contournement — renvoie tous les utilisateurs |
+| `admin' --` | n’importe quoi | Contournement — connexion en tant qu’admin |
+| `' OR '1'='1` | `x` | **Échec** — se lit `username='' OR ('1'='1' AND password='x')` |
+| `' OR '1'='1` | `' OR '1'='1` | Contournement — la tautologie est dans les deux champs |
+| `'` | n’importe quoi | Erreur de syntaxe (montre pourquoi la fuite d’erreurs est dangereuse) |
 
-Parameterized mode binds both inputs as values, so every payload above fails.
+Le mode paramétré lie les deux saisies comme des valeurs : tous les payloads ci-dessus échouent.
 
-### UNION attack lab (product search)
+Les erreurs brutes du moteur simulé (par ex. `SELECTs to the left and right of UNION do not have the same number of result columns`) restent volontairement en anglais, comme dans un vrai SGBD ; l’interface ajoute à côté une explication en français.
 
-A second scenario searches a **products** table with a fixed **3-column** shape (`id, title, body`):
+### Lab d’attaque UNION (recherche de produits)
+
+Un deuxième scénario interroge une table **products** de forme fixe à **3 colonnes** (`id, title, body`) :
 
 ```sql
 SELECT id, title, body FROM products WHERE title LIKE '%{input}%'
 ```
 
-The same SQL engine now also parses `UNION [ALL] SELECT`, `ORDER BY n`, and `LIKE`. One-click payloads probe the column count and leak the `users` table into the result grid.
+Le même moteur SQL gère aussi `UNION [ALL] SELECT`, `ORDER BY n` et `LIKE`. Des payloads en un clic sondent le nombre de colonnes et font fuiter la table `users` dans la grille de résultats.
 
-| Search input | Vulnerable result |
-|--------------|-------------------|
-| `Patch` | Normal match — "Patch Tuesday" |
-| `' ORDER BY 1 --` … `' ORDER BY 3 --` | OK (probe succeeds) |
-| `' ORDER BY 4 --` | Error: `ORDER BY position 4 is out of range` |
-| `' UNION SELECT username, password FROM users --` | Error: column count 3 vs 2 |
-| `' UNION SELECT null, null, null, null FROM users --` | Error: column count 3 vs 4 |
-| `' UNION SELECT null, username, password FROM users --` | **Leak** — usernames appear under `title`, passwords under `body` (highlighted rows) |
-| (any of the above, safe mode) | Bound `LIKE ?` — no UNION / ORDER BY / leak |
+| Saisie de recherche | Résultat en mode vulnérable |
+|---------------------|-----------------------------|
+| `Patch` | Résultat normal — « Patch Tuesday » |
+| `' ORDER BY 1 --` … `' ORDER BY 3 --` | OK (la sonde réussit) |
+| `' ORDER BY 4 --` | Erreur : `ORDER BY position 4 is out of range` |
+| `' UNION SELECT username, password FROM users --` | Erreur : 3 colonnes contre 2 |
+| `' UNION SELECT null, null, null, null FROM users --` | Erreur : 3 colonnes contre 4 |
+| `' UNION SELECT null, username, password FROM users --` | **Fuite** — les noms d’utilisateur apparaissent sous `title`, les mots de passe sous `body` (lignes surlignées) |
+| (n’importe lequel, mode sûr) | `LIKE ?` lié — ni UNION, ni ORDER BY, ni fuite |
 
-**Engine limits (current):** SELECT / WHERE / LIKE / IN / EXISTS / scalar subqueries / INNER|LEFT JOIN … ON / aliases / UNION [ALL] / ORDER BY / functions (`COUNT`, `LOWER`, `UPPER`, `LENGTH`, `SUBSTR`, `CONCAT`/`||`, `ASCII`). No RIGHT/FULL JOIN, no GROUP BY beyond a single aggregate SELECT, no LIMIT/OFFSET, no window functions, no DDL/DML, no stacked queries. Tables: `products` (3), `users` (4), `orders` (5), `api_keys` (3, hidden).
+**Limites actuelles du moteur :** SELECT / WHERE / LIKE / IN / EXISTS / sous-requêtes scalaires / INNER|LEFT JOIN … ON / alias / UNION [ALL] / ORDER BY / fonctions (`COUNT`, `LOWER`, `UPPER`, `LENGTH`, `SUBSTR`, `CONCAT`/`||`, `ASCII`). Pas de RIGHT/FULL JOIN, pas de GROUP BY au-delà d’un SELECT à agrégat unique, pas de LIMIT/OFFSET, pas de fonctions de fenêtrage, pas de DDL/DML, pas de requêtes empilées. Tables : `products` (3), `users` (4), `orders` (5), `api_keys` (3, cachée).
 
-### JOIN order-lookup lab
+### Lab de suivi de commande (JOIN)
 
 ```sql
 SELECT o.id, o.item, u.username, o.ship_to
@@ -127,220 +132,220 @@ FROM orders o INNER JOIN users u ON o.user_id = u.id
 WHERE o.id = '{input}'
 ```
 
-| Input | Vulnerable result |
-|-------|-------------------|
-| `1001` | Alice's order only |
-| `' OR 1=1 --` | Every customer's orders + shipping addresses (highlighted) |
-| `' UNION SELECT null, username, password, role FROM users --` | UNION against the 4-column JOIN shape |
-| (any, safe mode) | Bound `o.id = ?` — no leak |
+| Saisie | Résultat en mode vulnérable |
+|--------|-----------------------------|
+| `1001` | Uniquement la commande d’Alice |
+| `' OR 1=1 --` | Les commandes et adresses de livraison de tous les clients (surlignées) |
+| `' UNION SELECT null, username, password, role FROM users --` | UNION sur la forme à 4 colonnes du JOIN |
+| (n’importe laquelle, mode sûr) | `o.id = ?` lié — aucune fuite |
 
-### Blind boolean / subquery lab
+### Lab booléen à l’aveugle / sous-requêtes
 
-Same product-search page; payloads ask yes/no questions:
+Même page de recherche de produits ; les payloads posent des questions fermées (oui/non) :
 
-| Input | Oracle |
-|-------|--------|
-| `' AND (SELECT SUBSTR(password,1,1) FROM users WHERE username='admin')='s' --` | TRUE (rows) |
-| `…='x' --` | FALSE (0 rows) |
-| `' AND EXISTS(SELECT 1 FROM api_keys) --` | TRUE |
-| `' AND EXISTS(SELECT 1 FROM secrets) --` | Error `no such table` |
+| Saisie | Oracle |
+|--------|--------|
+| `' AND (SELECT SUBSTR(password,1,1) FROM users WHERE username='admin')='s' --` | VRAI (des lignes) |
+| `…='x' --` | FAUX (0 ligne) |
+| `' AND EXISTS(SELECT 1 FROM api_keys) --` | VRAI |
+| `' AND EXISTS(SELECT 1 FROM secrets) --` | Erreur `no such table` |
 
-## Real tools mode (local lab API)
+## Mode outils réels (API de lab locale)
 
 ```bash
-npm run server          # http://127.0.0.1:8787  (loopback only)
-npm run dev             # Vite UI
-# or both:
+npm run server          # http://127.0.0.1:8787  (boucle locale uniquement)
+npm run dev             # interface Vite
+# ou les deux :
 npm run dev:all
 ```
 
-Set `VITE_LAB_MODE=real` and `VITE_LAB_API_URL=http://127.0.0.1:8787`, or use the in-app **Tools** page toggle (persisted in `localStorage`, overrides the env default). Endpoints: `/health`, `/ping`, `/traceroute`, `/dns`, `/headers`, `/port`.
+Définissez `VITE_LAB_MODE=real` et `VITE_LAB_API_URL=http://127.0.0.1:8787`, ou utilisez l’interrupteur de la page **Outils** de l’application (mémorisé dans `localStorage`, prioritaire sur la valeur d’environnement). Points d’accès : `/health`, `/ping`, `/traceroute`, `/dns`, `/headers`, `/port`.
 
-**Security notes:** the API binds to `127.0.0.1` only, rate-limits to 30 req/min, validates hosts with a strict hostname/IPv4 allowlist (no shell metacharacters), and always invokes system binaries via `execFile` with an argument array (never a shell string). ICMP ping/traceroute fall back to a TCP `:443` connect probe when binaries are missing or ICMP is blocked — common inside containers. Packet capture is still simulated (needs root/pcap). The frontend allowlist permits loopback `http://` and any `https://` base without credentials (`src/lib/validation.ts`).
+**Sécurité :** l’API n’écoute que sur `127.0.0.1`, limite à 30 requêtes/min, valide les hôtes avec une liste blanche stricte nom d’hôte/IPv4 (aucun métacaractère shell) et appelle toujours les binaires système via `execFile` avec un tableau d’arguments (jamais une chaîne shell). Ping/traceroute ICMP se replient sur une sonde de connexion TCP `:443` quand les binaires manquent ou que l’ICMP est bloqué — fréquent dans les conteneurs. La capture de paquets reste simulée (nécessite root/pcap). Côté interface, la liste blanche accepte `http://` en boucle locale et toute base `https://` sans identifiants (`src/lib/validation.ts`). Les messages d’erreur de l’API sont en français.
 
-## AES lab: key derivation
+## Lab AES : dérivation de clé
 
-`src/lib/aes.ts` derives a 256-bit AES-GCM key from the passphrase with PBKDF2-HMAC-SHA-256 (600,000 iterations, random 16-byte salt) and uses a fresh random 12-byte IV per encryption. The stored blob is `base64(salt ‖ IV ‖ ciphertext+tag)`; the UI shows salt, IV, iteration count and timing. A wrong passphrase or a flipped bit fails GCM authentication.
+`src/lib/aes.ts` dérive une clé AES-GCM de 256 bits depuis la phrase secrète avec PBKDF2-HMAC-SHA-256 (600 000 itérations, salt aléatoire de 16 octets) et utilise un IV aléatoire de 12 octets neuf à chaque chiffrement. Le blob stocké vaut `base64(salt ‖ IV ‖ ciphertext+tag)` ; l’interface affiche le salt, l’IV, le nombre d’itérations et la durée. Une mauvaise phrase secrète ou un bit modifié fait échouer l’authentification GCM.
 
-## Lab mode: simulated → real tools
+## Mode des labs : simulé → outils réels
 
-Default (`.env`):
+Par défaut (`.env`) :
 
 ```
 VITE_LAB_MODE=simulated
 ```
 
-All labs use `src/labs/providers/simulated`. The `real` adapter is a no-network stub: it never calls `fetch` or contacts a host. To prepare for real tooling later:
+Tous les labs utilisent alors `src/labs/providers/simulated`. L’adaptateur `real` (`src/labs/providers/real/index.ts`) appelle l’API locale décrite plus haut. Pour l’activer :
 
-1. Copy `.env.example` → `.env` and set `VITE_LAB_MODE=real`
-2. Optionally set `VITE_LAB_API_BASE` to an `https://` URL or a same-origin path (no credentials)
-3. Implement methods in `src/labs/providers/real/index.ts`, routing every URL through `resolveLabApiUrl()` so arbitrary hosts cannot be called
-4. Keep educational UI the same — only the provider swaps
+1. Copiez `.env.example` → `.env` et mettez `VITE_LAB_MODE=real`
+2. Si besoin, réglez `VITE_LAB_API_URL` sur une URL `http://127.0.0.1…` / `localhost`, une URL `https://` ou un chemin de même origine (sans identifiants)
+3. Toute URL passe par `resolveLabApiUrl()`, si bien qu’aucun hôte arbitraire ne peut être appelé
+4. L’interface pédagogique reste identique — seul le fournisseur change
 
-See `src/labs/providers/types.ts` for the `LabProvider` interface.
+Voir `src/labs/providers/types.ts` pour l’interface `LabProvider`.
 
-## Deploy
+## Déploiement
 
-Any static host works after `npm run build`; publish `dist/`.
+N’importe quel hébergeur statique convient après `npm run build` : publiez `dist/`.
 
-CyberLab is a single-page app with client-side routes (`/modules/sqli`, `/progress`, …). Static hosts must serve `index.html` for unknown paths, or deep links and refreshes return 404. Fallbacks are already included:
+CyberLab est une application monopage avec des routes côté client (`/modules/sqli`, `/progress`, …). L’hébergeur doit servir `index.html` pour les chemins inconnus, sinon les liens directs et les rechargements renvoient une 404. Les solutions de repli sont déjà incluses :
 
-| Host | File | What it does |
-|------|------|--------------|
+| Hébergeur | Fichier | Rôle |
+|-----------|---------|------|
 | Netlify / Cloudflare Pages | `public/_redirects` → `dist/_redirects` | `/*  /index.html  200` |
-| Vercel | `vercel.json` | rewrites all paths to `/index.html` |
-| GitHub Pages | `dist/404.html` (copied from `index.html` by a small plugin in `vite.config.ts`) | serves the app for any unknown path |
-| nginx | — | add `try_files $uri /index.html;` |
-| S3 + CloudFront | — | set the error document / custom 403 & 404 responses to `/index.html` with status 200 |
+| Vercel | `vercel.json` | réécrit tous les chemins vers `/index.html` |
+| GitHub Pages | `dist/404.html` (copié depuis `index.html` par un petit plugin de `vite.config.ts`) | sert l’application pour tout chemin inconnu |
+| nginx | — | ajoutez `try_files $uri /index.html;` |
+| S3 + CloudFront | — | document d’erreur / réponses 403 et 404 personnalisées vers `/index.html` avec le statut 200 |
 
-### Sub-path and router settings (build-time env)
+### Sous-chemin et routeur (variables au moment du build)
 
-| Variable | Default | Effect |
-|----------|---------|--------|
-| `VITE_BASE` | `/` | Public base path. `VITE_BASE=/cyberlab/ npm run build` for a GitHub Pages project site (`vite build --base /cyberlab/` also works). The router `basename` follows automatically (`import.meta.env.BASE_URL`). |
-| `VITE_BASE=./` | — | Relocatable build: every asset URL is relative, and the app switches to `HashRouter` automatically (`index.html#/modules/sqli`), so it runs from any folder with no rewrite rules. Used by the Mac zip. |
-| `VITE_ROUTER=hash` | browser | Force `HashRouter` with any base. |
+| Variable | Défaut | Effet |
+|----------|--------|-------|
+| `VITE_BASE` | `/` | Chemin public de base. `VITE_BASE=/cyberlab/ npm run build` pour un site de projet GitHub Pages (`vite build --base /cyberlab/` fonctionne aussi). Le `basename` du routeur suit automatiquement (`import.meta.env.BASE_URL`). |
+| `VITE_BASE=./` | — | Build relocalisable : toutes les URL de ressources sont relatives et l’application passe automatiquement en `HashRouter` (`index.html#/modules/sqli`) ; elle fonctionne depuis n’importe quel dossier, sans règle de réécriture. Utilisé par le zip Mac. |
+| `VITE_ROUTER=hash` | browser | Force `HashRouter` quelle que soit la base. |
 
-Preview a sub-path build exactly as it will be served:
+Prévisualiser un build sous sous-chemin exactement comme il sera servi :
 
 ```bash
 VITE_BASE=/cyberlab/ npm run build
 VITE_BASE=/cyberlab/ npx vite preview     # → http://localhost:4173/cyberlab/
 ```
 
-The PWA manifest uses relative `start_url`/`scope`/icons, so it is correct under any base.
+Le manifeste PWA utilise des `start_url`/`scope`/icônes relatifs : il reste correct quelle que soit la base.
 
-### GitHub Pages (live at https://lyonkg.github.io/cyberlab/)
+### GitHub Pages (en ligne sur https://lyonkg.github.io/cyberlab/)
 
-`.github/workflows/pages.yml` runs the tests, builds with `VITE_BASE=/<repo-name>/` and deploys to Pages on every push to `main`. One-time setup by the repo owner: **Settings → Pages → Source: GitHub Actions**. On free GitHub plans Pages only works for **public** repositories. The site is then at `https://<owner>.github.io/<repo>/` (for a user site `<owner>.github.io` or a custom domain, change `VITE_BASE` to `/` in the workflow).
+`.github/workflows/pages.yml` lance les tests, compile avec `VITE_BASE=/<nom-du-dépôt>/` et déploie sur Pages à chaque push sur `main`. Réglage unique par le propriétaire du dépôt : **Settings → Pages → Source : GitHub Actions**. Avec les offres GitHub gratuites, Pages ne fonctionne que pour les dépôts **publics**. Le site est alors sur `https://<owner>.github.io/<repo>/` (pour un site utilisateur `<owner>.github.io` ou un domaine personnalisé, remplacez `VITE_BASE` par `/` dans le workflow).
 
-### GitHub Release with the Mac zip
+### Release GitHub avec le zip Mac
 
-`.github/workflows/release.yml` builds `cyberlab-mac.zip` and attaches it to a Release whenever a `v*` tag is pushed (or manually via *Actions → Release (macOS zip) → Run workflow*):
+`.github/workflows/release.yml` compile `cyberlab-mac.zip` et le joint à une Release à chaque push d’un tag `v*` (ou manuellement via *Actions → Release (macOS zip) → Run workflow*) :
 
 ```bash
-git tag v1.0.0 && git push origin v1.0.0
+git tag v1.1.0 && git push origin v1.1.0
 ```
 
-Manual alternative with the GitHub CLI (from a machine logged in with `gh auth login`):
+Alternative manuelle avec la CLI GitHub (depuis une machine connectée avec `gh auth login`) :
 
 ```bash
 npm run build:mac                                   # → release/cyberlab-mac.zip
-gh release create v1.0.0 release/cyberlab-mac.zip \
-  --title "CyberLab v1.0.0" \
+gh release create v1.1.0 release/cyberlab-mac.zip \
+  --title "CyberLab v1.1.0" \
   --notes "Mac : décompressez puis double-cliquez « Lancer CyberLab.command ». En ligne : https://<owner>.github.io/<repo>/"
-# later builds: gh release upload v1.0.0 release/cyberlab-mac.zip --clobber
+# builds suivants : gh release upload v1.1.0 release/cyberlab-mac.zip --clobber
 ```
 
-Direct download link after publishing: `https://github.com/<owner>/<repo>/releases/latest/download/cyberlab-mac.zip`.
+Lien de téléchargement direct après publication : `https://github.com/<owner>/<repo>/releases/latest/download/cyberlab-mac.zip`.
 
 ## macOS / Safari
 
-CyberLab is tested against **WebKit 27.2 with Playwright's *Desktop Safari* profile** (`npm run smoke:webkit`, see below). The smoke test covers all four main routes, all 8 modules, all 17 labs and quizzes, the animations (packet flow, MITM, malware spread, DDoS chart), Web Crypto AES-256-GCM + PBKDF2 encrypt/decrypt/wrong-key, localStorage persistence, deep-link reload, header navigation, and both fullscreen buttons. It passes at the root (`/`), under `/cyberlab/`, and from the Mac zip served with `python3 -m http.server`.
+CyberLab est testé avec **WebKit 27.2 et le profil *Desktop Safari* de Playwright** (`npm run smoke:webkit`, voir plus bas). Le test de fumée couvre les quatre routes principales, les 8 modules, les 17 labs et les quiz, les animations (flux de paquets, MITM, propagation du malware, graphique DDoS), le chiffrement/déchiffrement AES-256-GCM + PBKDF2 avec Web Crypto (et le rejet d’une mauvaise clé), la persistance dans localStorage, le rechargement d’un lien direct, la navigation par l’en-tête et les deux boutons de plein écran. Il vérifie aussi qu’aucun mot anglais courant ne subsiste dans le texte visible (hors code). Il passe à la racine (`/`), sous `/cyberlab/` et depuis le zip Mac servi par `python3 -m http.server`.
 
-### Three ways to use it on a Mac
+### Trois façons de l’utiliser sur Mac
 
-1. **Online:** open https://lyonkg.github.io/cyberlab/ in Safari.
-2. **Add to Dock (Safari 17+, macOS Sonoma+):** with the site open, choose **File → Add to Dock…**. CyberLab then opens in its own window with its icon (`apple-touch-icon.png`, `apple-mobile-web-app-*` meta and a `display: standalone` manifest are included). On iPhone/iPad use **Share → Add to Home Screen**.
-3. **Offline zip, `cyberlab-mac.zip`** ([download](https://github.com/lyonkg/cyberlab/releases/latest/download/cyberlab-mac.zip) from the GitHub Release, or build it with `npm run build:mac`):
+1. **En ligne :** ouvrez https://lyonkg.github.io/cyberlab/ dans Safari.
+2. **Ajouter au Dock (Safari 17+, macOS Sonoma+) :** site ouvert, choisissez **Fichier → Ajouter au Dock…**. CyberLab s’ouvre alors dans sa propre fenêtre, avec son icône (`apple-touch-icon.png`, balises `apple-mobile-web-app-*` et manifeste `display: standalone` inclus). Sur iPhone/iPad : **Partager → Sur l’écran d’accueil**.
+3. **Zip hors ligne, `cyberlab-mac.zip`** ([téléchargement](https://github.com/lyonkg/cyberlab/releases/latest/download/cyberlab-mac.zip) depuis la Release GitHub, ou compilez-le avec `npm run build:mac`) :
    ```
    CyberLab-Mac/
-   ├── Lancer CyberLab.command   # double-click: starts python3 -m http.server on 127.0.0.1 and opens Safari
-   ├── LISEZMOI-MAC.txt          # French instructions (Gatekeeper, chmod +x, file:// explanation)
-   └── app/                      # optimized static build, relative paths + HashRouter
+   ├── Lancer CyberLab.command   # double-clic : lance python3 -m http.server sur 127.0.0.1 et ouvre Safari
+   ├── LISEZMOI-MAC.txt          # instructions en français (Gatekeeper, chmod +x, explication file://)
+   └── app/                      # build statique optimisé, chemins relatifs + HashRouter
    ```
-   The launcher picks the first free port from 8765, binds **127.0.0.1 only**, waits until the server answers, then runs `open -a Safari`. Closing the Terminal window stops it.
+   Le lanceur choisit le premier port libre à partir de 8765, n’écoute que sur **127.0.0.1**, attend que le serveur réponde puis exécute `open -a Safari`. Fermer la fenêtre Terminal l’arrête.
 
-### Fullscreen
+### Plein écran
 
-- A **⤢ button in the header** puts the whole app in fullscreen. Each lab also has a **"Fullscreen" button** that fullscreens only that lab's frame, with an opaque background and scrolling.
-- The implementation is in `src/lib/fullscreen.ts` and `src/hooks/useFullscreen.ts`. It uses the standard API (`requestFullscreen`, `exitFullscreen`, `fullscreenchange`) and falls back to WebKit's prefixed API (`webkitRequestFullscreen`, `webkitExitFullscreen`, `webkitfullscreenchange`, `webkitFullscreenElement`) for older Safari.
-- When neither API exists, the buttons are hidden.
-- CSS for `:fullscreen` and `:-webkit-full-screen` is kept in separate rules. Safari drops a whole rule whose selector list contains an unknown pseudo-class.
+- Un **bouton ⤢ dans l’en-tête** passe toute l’application en plein écran. Chaque lab a aussi un **bouton « Plein écran »** qui n’agrandit que le cadre du lab, avec un fond opaque et le défilement.
+- L’implémentation se trouve dans `src/lib/fullscreen.ts` et `src/hooks/useFullscreen.ts`. Elle utilise l’API standard (`requestFullscreen`, `exitFullscreen`, `fullscreenchange`) et se replie sur l’API préfixée de WebKit (`webkitRequestFullscreen`, `webkitExitFullscreen`, `webkitfullscreenchange`, `webkitFullscreenElement`) pour les anciens Safari.
+- Si aucune des deux API n’existe, les boutons sont masqués.
+- Les règles CSS pour `:fullscreen` et `:-webkit-full-screen` sont séparées : Safari ignore toute une règle dont la liste de sélecteurs contient une pseudo-classe inconnue.
 
-### Safari fixes made for this release
+### Correctifs Safari
 
-- **CSP and local HTTP.** The CSP `<meta>` contained `upgrade-insecure-requests`, which made Safari/WebKit rewrite every script and style request on `http://127.0.0.1` / `localhost` to `https://`, so nothing loaded and the page stayed blank. Chrome exempts loopback; WebKit does not. The directive was removed from the meta tag and the `vite preview` headers. The HTTPS-only Vercel header keeps it. `frame-ancestors` was also removed from the meta tag, where browsers ignore it (Safari logs an error). It stays in the HTTP headers.
-- `backdrop-filter` (the glass panels) is emitted with `-webkit-backdrop-filter` by Lightning CSS, and the smoke test confirms it.
-- There is no regex lookbehind or `structuredClone` in app code. `Array.prototype.at` requires Safari 15.4+, within Vite's default build target (Safari 16+).
+- **CSP et HTTP local.** La balise `<meta>` CSP contenait `upgrade-insecure-requests`, ce qui poussait Safari/WebKit à réécrire en `https://` toutes les requêtes de scripts et de styles sur `http://127.0.0.1` / `localhost` : rien ne se chargeait et la page restait blanche. Chrome exempte la boucle locale ; WebKit non. La directive a été retirée de la balise meta et des en-têtes de `vite preview` ; l’en-tête Vercel (HTTPS uniquement) la conserve. `frame-ancestors` a aussi été retiré de la balise meta, où les navigateurs l’ignorent (Safari journalise une erreur). Il reste dans les en-têtes HTTP.
+- `backdrop-filter` (les panneaux en verre dépoli) est émis avec `-webkit-backdrop-filter` par Lightning CSS, ce que confirme le test de fumée.
+- Pas de lookbehind dans les regex ni de `structuredClone` dans le code de l’application. `Array.prototype.at` demande Safari 15.4+, ce qui reste dans la cible par défaut de Vite (Safari 16+).
 
-### macOS limitations
+### Limites sur macOS
 
-- **Safari fullscreen behaviour.** Entering fullscreen requires a click (user gesture); it cannot start automatically. Safari shows a short "Press Esc to exit" banner, and pressing **Esc** leaves fullscreen. The green window button / **Ctrl+Cmd+F** (window fullscreen) is separate from the in-page Fullscreen API: both work, but Esc only exits the in-page one. In a Dock web app, fullscreen works the same way.
-- **iOS / iPadOS.** iPhone Safari does not support element fullscreen (video only), so the buttons are hidden there. iPadOS 16.4+ supports it. "Add to Home Screen" gives a standalone, chrome-less window instead.
-- **Web Crypto needs a secure context.** `crypto.subtle` (AES/PBKDF2 lab) only exists on `https://` or `http://localhost` / `127.0.0.1`. Opening `index.html` directly (`file://`) will **not** work: Safari also blocks ES modules from `file://`. That is why the zip ships a launcher that starts a local server.
-- **Gatekeeper.** `Lancer CyberLab.command` is not signed or notarized. On first launch:
-  - macOS ≤ 14: right-click → **Open**.
-  - macOS 15+: **System Settings → Privacy & Security → Open Anyway**.
-  - If the executable bit was lost, run `chmod +x "Lancer CyberLab.command"`.
-  - Alternatively, run `xattr -dr com.apple.quarantine CyberLab-Mac`.
-- **Python 3.** The launcher uses `python3` from Apple's Command Line Tools (`xcode-select --install`). If it is missing, it shows an alert.
-- **Real tools mode (ICMP ping, traceroute…)** needs the source checkout and the local Node lab API (`npm run dev:all`); the zip and the Pages site run the simulated labs.
-  - macOS may ask to allow **incoming network connections** for `node`/`python3`, or **local network** access. Both servers bind to `127.0.0.1` only, so "Deny" for external access is fine.
-  - The `ping` binary works unprivileged on macOS. If it is unavailable, the server falls back to a TCP :443 probe.
-  - From the **HTTPS** Pages site, Safari may block calls to `http://127.0.0.1:8787` as mixed content. Use the real tools mode from `npm run dev:all` (`http://localhost:5173`).
-- **Progress storage.** Progress lives in Safari's `localStorage` for the exact origin. A different port (e.g. 8766) or the Pages site means separate progress. Private windows keep nothing, and Safari may purge site data after 7 days without visiting (ITP) for sites not added to the Dock.
-- **Minimum version:** Safari 16 / macOS 12 Monterey. "Add to Dock" needs Safari 17 / macOS 14 Sonoma.
+- **Plein écran dans Safari.** L’entrée en plein écran exige un clic (geste de l’utilisateur) ; elle ne peut pas démarrer automatiquement. Safari affiche brièvement un bandeau « Appuyez sur Échap pour quitter », et **Échap** sort du plein écran. Le bouton vert de la fenêtre / **Ctrl+Cmd+F** (plein écran de la fenêtre) est distinct de l’API Fullscreen de la page : les deux fonctionnent, mais Échap ne quitte que celle de la page. Dans une app web du Dock, le plein écran fonctionne de la même façon.
+- **iOS / iPadOS.** Safari sur iPhone ne gère pas le plein écran d’un élément (vidéo uniquement) : les boutons y sont masqués. iPadOS 16.4+ le gère. « Sur l’écran d’accueil » donne à la place une fenêtre autonome sans barre de navigation.
+- **Web Crypto exige un contexte sécurisé.** `crypto.subtle` (lab AES/PBKDF2) n’existe que sur `https://` ou `http://localhost` / `127.0.0.1`. Ouvrir `index.html` directement (`file://`) ne fonctionnera **pas** : Safari bloque aussi les modules ES en `file://`. D’où le lanceur du zip, qui démarre un serveur local.
+- **Gatekeeper.** `Lancer CyberLab.command` n’est ni signé ni notarié. Au premier lancement :
+  - macOS ≤ 14 : clic droit → **Ouvrir**.
+  - macOS 15+ : **Réglages Système → Confidentialité et sécurité → Ouvrir quand même**.
+  - Si le bit d’exécution a été perdu : `chmod +x "Lancer CyberLab.command"`.
+  - Ou bien : `xattr -dr com.apple.quarantine CyberLab-Mac`.
+- **Python 3.** Le lanceur utilise le `python3` des Command Line Tools d’Apple (`xcode-select --install`). S’il manque, une alerte s’affiche.
+- **Mode outils réels (ping ICMP, traceroute…)** : il faut le code source et l’API de lab Node locale (`npm run dev:all`) ; le zip et le site Pages exécutent les labs simulés.
+  - macOS peut demander d’autoriser les **connexions réseau entrantes** pour `node`/`python3`, ou l’accès au **réseau local**. Les deux serveurs n’écoutent que sur `127.0.0.1` : refuser l’accès externe ne pose pas de problème.
+  - Le binaire `ping` fonctionne sans privilèges sur macOS. S’il est indisponible, le serveur se replie sur une sonde TCP :443.
+  - Depuis le site Pages en **HTTPS**, Safari peut bloquer les appels à `http://127.0.0.1:8787` comme contenu mixte. Utilisez le mode outils réels depuis `npm run dev:all` (`http://localhost:5173`).
+- **Stockage de la progression.** La progression vit dans le `localStorage` de Safari pour l’origine exacte. Un autre port (par ex. 8766) ou le site Pages = une progression séparée. Les fenêtres privées ne gardent rien, et Safari peut effacer les données d’un site non visité depuis 7 jours (ITP) s’il n’a pas été ajouté au Dock.
+- **Version minimale :** Safari 16 / macOS 12 Monterey. « Ajouter au Dock » nécessite Safari 17 / macOS 14 Sonoma.
 
-### Re-run the WebKit smoke test
+### Relancer le test de fumée WebKit
 
 ```bash
-npm install --no-save playwright && npx playwright install webkit   # Linux also needs: npx playwright install-deps webkit
+npm install --no-save playwright && npx playwright install webkit   # sous Linux, aussi : npx playwright install-deps webkit
 npm run build && npx vite preview --host 127.0.0.1 --port 4173 &
-npm run smoke:webkit                                                # BASE_URL=… HASH=1 for the Mac zip
+npm run smoke:webkit                                                # BASE_URL=… HASH=1 pour le zip Mac
 ```
 
-## Project structure
+## Structure du projet
 
 ```
 cyberlab/
-├── PROMPTS.md                 # Verbatim user requests
+├── PROMPTS.md                 # Demandes de l’utilisateur, mot pour mot
 ├── README.md
-├── .env / .env.example        # VITE_LAB_MODE (no secrets; .env is gitignored)
+├── .env / .env.example        # VITE_LAB_MODE (aucun secret ; .env est ignoré par git)
 ├── index.html
-├── server/                   # Local lab API (ping/traceroute/dns/headers/port)
-├── scripts/dev-all.mjs         # Run API + Vite together
-├── scripts/build-mac.mjs       # npm run build:mac → release/cyberlab-mac.zip (uses package_mac.py)
-├── scripts/webkit-smoke.mjs    # npm run smoke:webkit — Safari/WebKit end-to-end smoke test
-├── packaging/mac/              # Lancer CyberLab.command + LISEZMOI-MAC.txt (copied into the Mac zip)
-├── .github/workflows/          # pages.yml (GitHub Pages) + release.yml (Mac zip on v* tags)
-├── vercel.json                # Vercel SPA rewrite + security headers
-├── public/                    # favicon, apple-touch-icon, icons/, PWA manifest, _redirects (Netlify)
-├── docs/screenshots/          # UI screenshots
+├── server/                   # API de lab locale (ping/traceroute/dns/headers/port)
+├── scripts/dev-all.mjs         # Lance l’API et Vite ensemble
+├── scripts/build-mac.mjs       # npm run build:mac → release/cyberlab-mac.zip (utilise package_mac.py)
+├── scripts/webkit-smoke.mjs    # npm run smoke:webkit — test de fumée Safari/WebKit de bout en bout
+├── packaging/mac/              # Lancer CyberLab.command + LISEZMOI-MAC.txt (copiés dans le zip Mac)
+├── .github/workflows/          # pages.yml (GitHub Pages) + release.yml (zip Mac sur les tags v*)
+├── vercel.json                # Réécriture SPA Vercel + en-têtes de sécurité
+├── public/                    # favicon, apple-touch-icon, icons/, manifeste PWA, _redirects (Netlify)
+├── docs/screenshots/          # Captures d’écran de l’interface
 ├── src/
 │   ├── App.tsx / main.tsx / index.css
 │   ├── components/            # Layout, Quiz, LessonCard, PercentBar, FullscreenButton
-│   ├── pages/                 # Home, Module, Labs, Progress
-│   ├── data/modules/          # Per-topic curriculum files + index
-│   ├── data/modules.ts        # Re-exports
+│   ├── pages/                 # Accueil, Module, Labs, Progression, Outils
+│   ├── data/modules/          # Contenu pédagogique par thème + index
+│   ├── data/modules.ts        # Ré-exports
 │   ├── lib/
-│   │   ├── sql/               # modular engine: ast, tokenizer, parser, evaluator, functions, database, scenarios
-│   │   ├── sqli.ts / sqlSelect.ts  # thin compatibility façades
+│   │   ├── sql/               # moteur modulaire : ast, tokenizer, parser, evaluator, functions, database, scenarios
+│   │   ├── sqli.ts / sqlSelect.ts  # façades de compatibilité
 │   │   ├── aes, ciphers, firewall, quiz, progress, password, validation, fullscreen, routerConfig
 │   ├── labs/
-│   │   ├── providers/         # simulated + real adapters
-│   │   ├── titles.ts          # lab names (kept separate so lab code stays lazy)
-│   │   └── ui/                # Interactive lab components (each lazy-loaded)
+│   │   ├── providers/         # adaptateurs simulé + réel
+│   │   ├── titles.ts          # noms des labs (séparés pour garder le code des labs en chargement différé)
+│   │   └── ui/                # Composants des labs interactifs (chacun chargé à la demande)
 │   ├── hooks/                 # useProgress, useFullscreen
 │   ├── types/
 │   └── test/setup.ts
-└── vite.config.ts             # Vite + Tailwind + Vitest, chunk groups, 404.html fallback
+└── vite.config.ts             # Vite + Tailwind + Vitest, groupes de chunks, repli 404.html
 ```
 
 
-## Security notes
+## Notes de sécurité
 
-- There is no backend, so CSRF and classic IDOR against a server do not apply. Progress is stored only in `localStorage` and is parsed with a schema (invalid or oversized JSON is discarded).
-- The production build ships a strict Content-Security-Policy (`script-src`/`style-src` `'self'`, no `unsafe-eval`). Vite's dev server strips that meta tag so Hot Module Replacement can run.
-  - `connect-src` allows only `'self'` plus the loopback lab API (`http://127.0.0.1:8787`, `http://localhost:8787`).
-  - The meta tag has no `upgrade-insecure-requests`, because Safari would then break every plain-HTTP localhost serving (see *macOS / Safari*). HTTPS hosts send it as a header (`vercel.json`).
-- The SQL injection labs intentionally concatenate input into a simulated in-memory engine (vulnerable vs parameterized modes). Input is length-capped; the parser does not use `eval`, a real database, or HTML injection. Demo accounts (`alice`/`wonderland`, `bob`/`builder`, `admin`/`s3cret!`) are fake teaching data.
-- The phishing lab renders sample emails as text and never uses the displayed destination as a navigable `href`.
+- Il n’y a pas de backend : la CSRF et les IDOR classiques contre un serveur ne s’appliquent pas. La progression n’est stockée que dans `localStorage` et relue avec un schéma (un JSON invalide ou trop gros est ignoré).
+- Le build de production embarque une Content-Security-Policy stricte (`script-src`/`style-src` `'self'`, pas de `unsafe-eval`). Le serveur de dev de Vite retire cette balise meta pour que le Hot Module Replacement fonctionne.
+  - `connect-src` n’autorise que `'self'` et l’API de lab en boucle locale (`http://127.0.0.1:8787`, `http://localhost:8787`).
+  - La balise meta ne contient pas `upgrade-insecure-requests`, car Safari casserait alors tout service en HTTP simple sur localhost (voir *macOS / Safari*). Les hébergeurs HTTPS l’envoient en en-tête (`vercel.json`).
+- Les labs d’injection SQL concatènent volontairement la saisie dans un moteur simulé en mémoire (modes vulnérable et paramétré). La saisie est limitée en longueur ; le parseur n’utilise ni `eval`, ni vraie base de données, ni injection HTML. Les comptes de démo (`alice`/`wonderland`, `bob`/`builder`, `admin`/`s3cret!`) sont des données pédagogiques fictives.
+- Le lab de phishing affiche les e-mails d’exemple en texte et n’utilise jamais la destination affichée comme `href` cliquable.
 
-## Ethical use
+## Usage éthique
 
-CyberLab simulations are for education only. Do not use these techniques against systems you do not own or lack explicit permission to test.
+Les simulations de CyberLab sont uniquement pédagogiques. N’utilisez pas ces techniques contre des systèmes qui ne vous appartiennent pas ou sans autorisation explicite de les tester.
 
-## License
+## Licence
 
-Source delivered for learning / portfolio use as requested.
+Code source fourni pour l’apprentissage / un portfolio, comme demandé.

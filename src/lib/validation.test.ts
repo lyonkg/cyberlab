@@ -117,7 +117,7 @@ describe('lab API URL guard', () => {
 
   it('refuses path traversal to another origin or absolute URLs', () => {
     expect(() => resolveLabApiUrl('https://evil.example/', 'https://labs.example.edu/api')).toThrow(
-      /absolute/,
+      /absolu/,
     )
     expect(() =>
       resolveLabApiUrl('//evil.example/pwn', 'https://labs.example.edu/api'),

@@ -5,6 +5,14 @@ import { useProgress } from '../hooks/useProgress'
 
 type Tool = 'ping' | 'traceroute' | 'dns' | 'headers' | 'port'
 
+const TOOL_LABELS: Record<Tool, string> = {
+  ping: 'ping',
+  traceroute: 'traceroute',
+  dns: 'DNS',
+  headers: 'en-têtes HTTP',
+  port: 'port',
+}
+
 export function NetworkToolsPage() {
   const [mode, setMode] = useState<LabMode>(() => getLabMode())
   const [tool, setTool] = useState<Tool>('ping')
@@ -66,17 +74,17 @@ export function NetworkToolsPage() {
   return (
     <div className="space-y-6" data-testid="lab-network-tools">
       <div>
-        <h1 className="text-2xl font-bold text-white">Network Tools Lab</h1>
+        <h1 className="text-2xl font-bold text-white">Lab des outils réseau</h1>
         <p className="text-slate-400 mt-2 text-sm max-w-2xl">
-          Ping, traceroute, DNS, HTTP header/TLS inspection, and single-port checks. In{' '}
-          <strong className="text-slate-200">simulated</strong> mode everything stays in the browser. In{' '}
-          <strong className="text-slate-200">real</strong> mode the UI calls the local lab API (
+          Ping, traceroute, DNS, inspection des en-têtes HTTP/TLS et test d’un port. En mode{' '}
+          <strong className="text-slate-200">simulé</strong>, tout reste dans le navigateur. En mode{' '}
+          <strong className="text-slate-200">outils réels</strong>, l’interface appelle l’API de lab locale (
           <code className="text-cyan-300">npm run server</code> → {envLabApiBase()}).
         </p>
       </div>
 
       <div className="glass rounded-xl p-4 flex flex-wrap items-center gap-3">
-        <span className="text-xs uppercase tracking-wider text-slate-500">Lab mode</span>
+        <span className="text-xs uppercase tracking-wider text-slate-500">Mode des labs</span>
         {(['simulated', 'real'] as const).map((m) => (
           <button
             key={m}
@@ -86,17 +94,17 @@ export function NetworkToolsPage() {
               mode === m ? 'bg-cyan-500/30 text-cyan-100' : 'border border-slate-700 text-slate-400'
             }`}
           >
-            {m}
+            {m === 'real' ? 'outils réels' : 'simulé'}
           </button>
         ))}
         <span className="text-xs text-slate-500">
-          provider: {provider.name}
+          fournisseur : {provider.name}
           {mode === 'real' && (
             <>
               {' '}
               · API{' '}
               <span className={health === 'up' ? 'text-emerald-300' : health === 'down' ? 'text-rose-300' : ''}>
-                {health === 'up' ? 'reachable' : health === 'down' ? 'unreachable — start npm run server' : '…'}
+                {health === 'up' ? 'joignable' : health === 'down' ? 'injoignable — lancez npm run server' : '…'}
               </span>
             </>
           )}
@@ -113,7 +121,7 @@ export function NetworkToolsPage() {
               tool === t ? 'bg-violet-500/30 text-violet-100' : 'border border-slate-700 text-slate-400'
             }`}
           >
-            {t}
+            {TOOL_LABELS[t]}
           </button>
         ))}
       </div>
@@ -121,7 +129,7 @@ export function NetworkToolsPage() {
       <div className="glass rounded-xl p-4 space-y-3 max-w-xl">
         {tool !== 'headers' ? (
           <label className="block text-xs text-slate-400">
-            Host
+            Hôte
             <input
               className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono"
               value={host}
@@ -157,7 +165,7 @@ export function NetworkToolsPage() {
           onClick={run}
           className="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 text-sm font-semibold disabled:opacity-40"
         >
-          {busy ? 'Running…' : 'Run'}
+          {busy ? 'Exécution…' : 'Lancer'}
         </button>
       </div>
 
@@ -166,7 +174,7 @@ export function NetworkToolsPage() {
           {error}
           {mode === 'real' && (
             <p className="text-xs mt-2 text-amber-200/80">
-              Tip: switch back to simulated mode, or start the API with <code>npm run server</code>.
+              Astuce : repassez en mode simulé, ou démarrez l’API avec <code>npm run server</code>.
             </p>
           )}
         </div>

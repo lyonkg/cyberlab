@@ -156,9 +156,9 @@ describe('simulateSearch — parameterized', () => {
   })
 
   it('still finds real titles', () => {
-    const r = simulateSearch('Welcome', false)
+    const r = simulateSearch('Bienvenue', false)
     expect(r.rows).toHaveLength(1)
-    expect(r.rows[0].title).toBe('Welcome')
+    expect(r.rows[0].title).toBe('Bienvenue')
   })
 })
 

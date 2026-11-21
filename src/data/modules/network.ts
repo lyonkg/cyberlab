@@ -2,10 +2,10 @@ import type { ModuleMeta } from '../../types'
 
 export const NETWORK_MODULE: ModuleMeta = {
     id: 'network',
-    title: 'Network Security',
-    shortTitle: 'Network',
+    title: 'Sécurité réseau',
+    shortTitle: 'Réseau',
     description:
-      'Topology, firewalls, packet flow, and the TCP handshake — see how packets move and how rules stop (or allow) them.',
+      'Topologie, pare-feu, flux de paquets et handshake TCP : voyez comment les paquets circulent et comment les règles les bloquent (ou les laissent passer).',
     icon: 'Network',
     path: '/modules/network',
     color: 'cyan',
@@ -13,44 +13,44 @@ export const NETWORK_MODULE: ModuleMeta = {
     lessons: [
       {
         id: 'network-intro',
-        title: 'Why network security matters',
+        title: 'Pourquoi la sécurité réseau est essentielle',
         content:
-          'Every service you use rides on packets crossing untrusted networks. Network security controls who can talk to whom, on which ports, and under what protocols. Firewalls, segmentation, and encrypted transports form the first line of defense.',
+          'Chaque service que vous utilisez repose sur des paquets qui traversent des réseaux non fiables. La sécurité réseau contrôle qui peut parler à qui, sur quels ports et avec quels protocoles. Pare-feu, segmentation et transports chiffrés forment la première ligne de défense.',
       },
       {
         id: 'network-osi',
-        title: 'Layers in practice',
+        title: 'Les couches en pratique',
         content:
-          'Think in layers: physical links, IP routing, TCP/UDP sessions, and application protocols (HTTP, DNS, SSH). Attacks and defenses often target a specific layer — understanding the stack helps you place controls correctly.',
+          'Raisonnez en couches : liens physiques, routage IP, sessions TCP/UDP et protocoles applicatifs (HTTP, DNS, SSH). Attaques et défenses visent souvent une couche précise : comprendre la pile aide à placer les contrôles au bon endroit.',
       },
       {
         id: 'network-firewall',
-        title: 'Firewall basics',
+        title: 'Les bases du pare-feu',
         content:
-          'A firewall evaluates packets against ordered rules (allow/deny). First match wins; unmatched traffic is usually denied by default. Good rules are specific: least privilege, explicit allow for needed services, deny the rest.',
+          'Un pare-feu évalue chaque paquet selon des règles ordonnées (autoriser/refuser). La première règle qui correspond l’emporte ; le trafic sans correspondance est généralement refusé par défaut. De bonnes règles sont précises : moindre privilège, autorisation explicite des services nécessaires, refus du reste.',
       },
     ],
     quiz: [
       {
         id: 'nq1',
-        prompt: 'In a typical first-match firewall, what happens if no rule matches?',
-        choices: ['Allow the packet', 'Deny the packet (default deny)', 'Ask the user', 'Forward to DNS'],
+        prompt: 'Dans un pare-feu classique « première correspondance », que se passe-t-il si aucune règle ne correspond ?',
+        choices: ['Le paquet est autorisé', 'Le paquet est refusé (refus par défaut)', 'On demande à l’utilisateur', 'Il est transmis au DNS'],
         correctIndex: 1,
-        explanation: 'Default-deny is the secure baseline: only explicitly allowed traffic passes.',
+        explanation: 'Le refus par défaut (default deny) est la base sûre : seul le trafic explicitement autorisé passe.',
       },
       {
         id: 'nq2',
-        prompt: 'Which TCP handshake step does the server send first?',
+        prompt: 'Quelle étape du handshake TCP le serveur envoie-t-il en premier ?',
         choices: ['ACK', 'FIN', 'SYN-ACK', 'RST'],
         correctIndex: 2,
-        explanation: 'Client SYN → Server SYN-ACK → Client ACK completes the three-way handshake.',
+        explanation: 'SYN du client → SYN-ACK du serveur → ACK du client : la poignée de main en trois temps est terminée.',
       },
       {
         id: 'nq3',
-        prompt: 'Port 443 is commonly associated with:',
-        choices: ['Unencrypted HTTP', 'SSH', 'HTTPS/TLS', 'SMTP'],
+        prompt: 'Le port 443 est généralement associé à :',
+        choices: ['HTTP non chiffré', 'SSH', 'HTTPS/TLS', 'SMTP'],
         correctIndex: 2,
-        explanation: 'HTTPS uses TLS, typically on TCP port 443.',
+        explanation: 'HTTPS utilise TLS, en général sur le port TCP 443.',
       },
     ],
 }

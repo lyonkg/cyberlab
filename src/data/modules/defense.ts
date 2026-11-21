@@ -2,10 +2,10 @@ import type { ModuleMeta } from '../../types'
 
 export const DEFENSE_MODULE: ModuleMeta = {
     id: 'defense',
-    title: 'Defense Basics',
-    shortTitle: 'Defense',
+    title: 'Bases de la défense',
+    shortTitle: 'Défense',
     description:
-      'Password strength, MFA, patching, least privilege, and defense in depth — practical habits that compound.',
+      'Robustesse des mots de passe, MFA, correctifs, moindre privilège et défense en profondeur : des habitudes concrètes qui se cumulent.',
     icon: 'Shield',
     path: '/modules/defense',
     color: 'sky',
@@ -13,59 +13,59 @@ export const DEFENSE_MODULE: ModuleMeta = {
     lessons: [
       {
         id: 'def-intro',
-        title: 'Defense in depth',
+        title: 'La défense en profondeur',
         content:
-          'No single control is perfect. Layer preventive, detective, and responsive controls: strong auth, patching, least privilege, network segmentation, logging/monitoring, and backups.',
+          'Aucun contrôle n’est parfait. Superposez des contrôles préventifs, de détection et de réponse : authentification forte, correctifs, moindre privilège, segmentation réseau, journalisation/surveillance et sauvegardes.',
       },
       {
         id: 'def-auth',
-        title: 'Authentication hygiene',
+        title: 'Hygiène d’authentification',
         content:
-          'Long unique passwords (or a password manager), MFA everywhere possible, and phishing-resistant factors (security keys) dramatically reduce account takeover risk.',
+          'Des mots de passe longs et uniques (ou un gestionnaire de mots de passe), la MFA partout où c’est possible et des facteurs résistants au phishing (clés de sécurité) réduisent fortement le risque de prise de contrôle de compte.',
       },
       {
         id: 'def-patch',
-        title: 'Patch & privilege',
+        title: 'Correctifs et privilèges',
         content:
-          'Unpatched software is a top breach vector. Apply updates promptly. Grant the minimum permissions needed for each role — least privilege limits damage when something slips through.',
+          'Les logiciels non corrigés sont l’une des premières causes de compromission. Appliquez les mises à jour rapidement. N’accordez que les permissions nécessaires à chaque rôle : le moindre privilège limite les dégâts quand quelque chose passe entre les mailles.',
       },
     ],
     quiz: [
       {
         id: 'defq1',
-        prompt: 'MFA primarily helps by:',
+        prompt: 'La MFA aide surtout en :',
         choices: [
-          'Making passwords unnecessary forever',
-          'Requiring a second factor if the password is stolen',
-          'Encrypting the hard drive',
-          'Blocking DDoS',
+          'Rendant les mots de passe définitivement inutiles',
+          'Exigeant un second facteur si le mot de passe est volé',
+          'Chiffrant le disque dur',
+          'Bloquant les DDoS',
         ],
         correctIndex: 1,
-        explanation: 'Stolen passwords alone are often not enough when MFA is enforced.',
+        explanation: 'Un mot de passe volé ne suffit souvent plus quand la MFA est imposée.',
       },
       {
         id: 'defq2',
-        prompt: 'Least privilege means:',
+        prompt: 'Le moindre privilège signifie :',
         choices: [
-          'Everyone gets admin “just in case”',
-          'Accounts get only the access required for their job',
-          'Disabling all firewalls',
-          'Sharing one root password',
+          'Tout le monde est admin « au cas où »',
+          'Chaque compte n’a que les accès nécessaires à sa fonction',
+          'Désactiver tous les pare-feu',
+          'Partager un seul mot de passe root',
         ],
         correctIndex: 1,
-        explanation: 'Minimize access to minimize blast radius.',
+        explanation: 'Réduire les accès, c’est réduire le rayon d’impact.',
       },
       {
         id: 'defq3',
-        prompt: 'Defense in depth means:',
+        prompt: 'La défense en profondeur consiste à :',
         choices: [
-          'Relying on a single perfect control',
-          'Layering multiple complementary controls',
-          'Only using antivirus',
-          'Never connecting to the internet',
+          'Se reposer sur un seul contrôle parfait',
+          'Superposer plusieurs contrôles complémentaires',
+          'Utiliser uniquement un antivirus',
+          'Ne jamais se connecter à Internet',
         ],
         correctIndex: 1,
-        explanation: 'Overlapping controls catch failures of any one layer.',
+        explanation: 'Des contrôles qui se recouvrent rattrapent la défaillance de n’importe quelle couche.',
       },
     ]
 }

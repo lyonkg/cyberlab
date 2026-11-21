@@ -5,28 +5,28 @@ import { PercentBar } from '../../components/PercentBar'
 const LAYERS = [
   {
     id: 'edge',
-    title: 'Edge / Network',
-    items: ['Firewall + WAF', 'DDoS protection', 'TLS everywhere', 'Network segmentation'],
+    title: 'Périmètre / réseau',
+    items: ['Pare-feu + WAF', 'Protection DDoS', 'TLS partout', 'Segmentation réseau'],
   },
   {
     id: 'identity',
-    title: 'Identity',
-    items: ['SSO + MFA', 'Least privilege RBAC', 'Credential vaulting', 'Just-in-time access'],
+    title: 'Identité',
+    items: ['SSO + MFA', 'RBAC au moindre privilège', 'Coffre-fort d’identifiants', 'Accès juste-à-temps'],
   },
   {
     id: 'host',
-    title: 'Host / App',
-    items: ['Patch management', 'EDR / antivirus', 'Secure SDLC', 'Parameterized queries'],
+    title: 'Hôte / application',
+    items: ['Gestion des correctifs', 'EDR / antivirus', 'Cycle de développement sécurisé', 'Requêtes paramétrées'],
   },
   {
     id: 'data',
-    title: 'Data',
-    items: ['Encryption at rest', 'Backups + restore tests', 'DLP policies', 'Key rotation'],
+    title: 'Données',
+    items: ['Chiffrement au repos', 'Sauvegardes + tests de restauration', 'Politiques DLP', 'Rotation des clés'],
   },
   {
     id: 'detect',
-    title: 'Detect & Respond',
-    items: ['Central logging', 'Alerting / SIEM', 'Incident playbooks', 'Tabletop exercises'],
+    title: 'Détection et réponse',
+    items: ['Journalisation centralisée', 'Alertes / SIEM', 'Procédures de réponse aux incidents', 'Exercices de simulation'],
   },
 ]
 
@@ -48,13 +48,13 @@ export function DefenseDepthLab() {
   return (
     <div className="space-y-4" data-testid="lab-defense-depth">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">Defense in Depth Checklist</h3>
+        <h3 className="font-semibold text-white">Check-list de défense en profondeur</h3>
         <span className="text-xs text-cyan-300">
-          {score}/{total} controls enabled
+          {score}/{total} contrôles activés
         </span>
       </div>
       <p className="text-sm text-slate-400">
-        Toggle controls across layers. Real security stacks overlapping defenses — no single silver bullet.
+        Activez des contrôles sur les différentes couches. Une vraie sécurité empile des défenses qui se recouvrent — il n’existe pas de solution miracle.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
         {LAYERS.map((layer) => (

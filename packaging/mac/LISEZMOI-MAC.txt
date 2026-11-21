@@ -3,6 +3,7 @@ CyberLab pour Mac — LISEZ-MOI
 
 CyberLab est une application web (HTML/JS) optimisée pour Safari sur macOS.
 Ce dossier contient la version compilée, utilisable hors ligne.
+L'interface est entièrement en français (version 1.1.0).
 
 DÉMARRAGE RAPIDE
 ----------------
@@ -46,11 +47,11 @@ AJOUTER AU DOCK (Safari 17+, macOS Sonoma ou plus récent)
 --------------------------------------------------------
 Dans Safari : menu Fichier > Ajouter au Dock… CyberLab s'ouvre alors dans
 sa propre fenêtre. Le serveur local doit tourner (lancez d'abord le script),
-ou bien utilisez la version en ligne (GitHub Pages) si elle est publiée.
+ou bien utilisez la version en ligne : https://lyonkg.github.io/cyberlab/
 
 PLEIN ÉCRAN
 -----------
-Bouton ⤢ en haut à droite (toute l'app) ou « Fullscreen » sur chaque lab.
+Bouton ⤢ en haut à droite (toute l'app) ou « Plein écran » sur chaque lab.
 Échap pour sortir. Safari affiche brièvement un bandeau « Échap pour
 quitter » : c'est normal. Ctrl+Cmd+F met aussi la fenêtre en plein écran.
 

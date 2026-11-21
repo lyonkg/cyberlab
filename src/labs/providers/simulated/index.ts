@@ -18,9 +18,9 @@ async function sha256Hex(input: string): Promise<string> {
 
 export const simulatedProvider: LabProvider = {
   mode: 'simulated',
-  name: 'Simulated Lab Provider',
+  name: 'fournisseur de labs simulé',
   description:
-    'All labs run entirely in the browser. No API keys, no network capture privileges, no real targets.',
+    'Tous les labs tournent entièrement dans le navigateur : aucune clé d’API, aucun privilège de capture réseau, aucune vraie cible.',
   async capturePackets(): Promise<PacketCaptureResult> {
     const now = Date.now()
     return {
@@ -60,7 +60,7 @@ export const simulatedProvider: LabProvider = {
       host,
       ok: true,
       method: 'simulated-icmp',
-      summary: `PING ${host}: 3 packets transmitted, 3 received, 0% loss (simulated)\nrtt min/avg/max = 12.1/14.8/18.2 ms`,
+      summary: `PING ${host}: 3 packets transmitted, 3 received, 0% loss (simulé)\nrtt min/avg/max = 12.1/14.8/18.2 ms`,
       raw: 'SIM',
       source: 'simulated',
     }
@@ -118,7 +118,7 @@ export const simulatedProvider: LabProvider = {
       port,
       ok: open,
       ms: 12 + (port % 7),
-      detail: open ? 'connected (simulated)' : 'connection refused (simulated)',
+      detail: open ? 'connecté (simulé)' : 'connexion refusée (simulé)',
       method: `tcp/${port}`,
       source: 'simulated',
     }

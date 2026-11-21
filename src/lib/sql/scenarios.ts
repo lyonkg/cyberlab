@@ -13,8 +13,35 @@ import {
 } from './database'
 import { runSelect } from './evaluator'
 import { parseSql, parseWhere } from './parser'
-import { SqlError, stripComments } from './tokenizer'
+import { SqlError, stripComments, type SqlErrorKind } from './tokenizer'
 import { evalBoolOnRow } from './evaluator'
+
+/**
+ * French explanation shown next to a raw database error. The raw message itself stays in
+ * English on purpose: it mimics what a real DBMS (SQLite/MySQL) prints, which is what
+ * attackers actually see and search for.
+ */
+export function explainSqlErrorFr(kind: SqlErrorKind | undefined): string {
+  switch (kind) {
+    case 'column-count':
+      return 'Les deux SELECT du UNION ne renvoient pas le même nombre de colonnes.'
+    case 'order-by':
+      return 'ORDER BY désigne une colonne qui n’existe pas dans le résultat (position trop grande ou nom inconnu).'
+    case 'no-such-column':
+      return 'La requête cite une colonne qui n’existe pas.'
+    case 'no-such-table':
+      return 'La requête cite une table qui n’existe pas.'
+    case 'ambiguous-column':
+      return 'Le nom de colonne existe dans plusieurs tables jointes : préfixez-le (ex. u.id).'
+    case 'subquery':
+      return 'La sous-requête est invalide (par ex. une sous-requête scalaire qui renvoie plusieurs colonnes).'
+    case 'stacked':
+      return 'Les requêtes empilées (plusieurs instructions séparées par ;) sont refusées par ce moteur.'
+    default:
+      return 'Erreur de syntaxe : la requête construite n’est plus du SQL valide (apostrophe non fermée, mot-clé mal placé…).'
+  }
+}
+
 
 export const PRODUCT_COLUMNS = ['id', 'title', 'body'] as const
 export const PRODUCT_COLUMN_COUNT = PRODUCT_COLUMNS.length
@@ -74,10 +101,10 @@ export function simulateLogin(username: string, password: string, vulnerable: bo
       error: null,
       injectionDetected,
       message: rows.length
-        ? `Welcome, ${rows[0].username}! (safe parameterized query)`
+        ? `Bienvenue, ${rows[0].username} ! (requête paramétrée sûre)`
         : injectionDetected
-          ? 'Injection attempt neutralized — inputs are bound as plain values, so quotes and -- are just characters.'
-          : 'Invalid credentials.',
+          ? 'Tentative d’injection neutralisée — les saisies sont liées comme de simples valeurs : les apostrophes et -- ne sont que des caractères.'
+          : 'Identifiants invalides.',
     }
   }
 
@@ -98,7 +125,7 @@ export function simulateLogin(username: string, password: string, vulnerable: bo
       bypassed: false,
       error: msg,
       injectionDetected,
-      message: `Database error: ${msg}. (Leaking raw SQL errors like this helps attackers refine payloads.)`,
+      message: `Erreur de base de données : ${msg}. ${explainSqlErrorFr(e instanceof SqlError ? e.kind : undefined)} (Afficher des erreurs SQL brutes comme celle-ci aide les attaquants à affiner leurs payloads.)`,
     }
   }
   const loggedIn = rows.length > 0
@@ -106,15 +133,15 @@ export function simulateLogin(username: string, password: string, vulnerable: bo
   let message: string
   if (!loggedIn) {
     message = injectionDetected
-      ? "Query ran but matched no rows. Remember SQL precedence: AND binds tighter than OR, so the password check may still apply. Try commenting out the rest with --."
-      : 'Invalid credentials.'
+      ? "La requête s’est exécutée mais n’a renvoyé aucune ligne. Rappel sur la priorité SQL : AND est prioritaire sur OR, donc la vérification du mot de passe peut toujours s’appliquer. Essayez de mettre la suite en commentaire avec --."
+      : 'Identifiants invalides.'
   } else if (bypassed) {
     message =
       rows.length > 1
-        ? `Injection succeeded! WHERE clause matched ${rows.length} users — logged in as first row "${rows[0].username}" without a valid password.`
-        : `Injection succeeded! Logged in as "${rows[0].username}" without the correct password.`
+        ? `Injection réussie ! La clause WHERE a renvoyé ${rows.length} utilisateurs — connecté avec la première ligne « ${rows[0].username} » sans mot de passe valide.`
+        : `Injection réussie ! Connecté en tant que « ${rows[0].username} » sans le bon mot de passe.`
   } else {
-    message = `Welcome, ${rows[0].username}!`
+    message = `Bienvenue, ${rows[0].username} !`
   }
   return {
     query,
@@ -168,10 +195,10 @@ export function simulateSearch(input: string, vulnerable: boolean): SearchResult
       errorKind: null,
       columnCount,
       message: injectionDetected
-        ? 'Injection attempt neutralized — the LIKE pattern is a bound value, so UNION / ORDER BY / JOIN / subquery never become SQL.'
+        ? 'Tentative d’injection neutralisée — le motif LIKE est une valeur liée : UNION / ORDER BY / JOIN / sous-requêtes ne deviennent jamais du SQL.'
         : rows.length
-          ? `Found ${rows.length} product(s).`
-          : 'No products matched.',
+          ? `${rows.length} produit(s) trouvé(s).`
+          : 'Aucun produit ne correspond.',
     }
   }
 
@@ -196,22 +223,22 @@ export function simulateSearch(input: string, vulnerable: boolean): SearchResult
       errorKind: null,
       columnCount,
       message: leaked
-        ? `UNION succeeded — ${leakedRowIndexes.length} leaked row(s) appended from another table. Look at the highlighted rows.`
+        ? `UNION réussi — ${leakedRowIndexes.length} ligne(s) d’une autre table ajoutée(s) au résultat. Regardez les lignes surlignées.`
         : result.rows.length
-          ? `Query OK — ${result.rows.length} row(s) from products.`
-          : 'Query OK — 0 rows.',
+          ? `Requête OK — ${result.rows.length} ligne(s) de products.`
+          : 'Requête OK — 0 ligne.',
     }
   } catch (e) {
     const err = e instanceof SqlError ? e : new SqlError(String(e))
     let tip = ''
     if (err.kind === 'column-count') {
-      tip = ` Hint: the left SELECT returns ${columnCount} columns (${PRODUCT_COLUMNS.join(', ')}), so every UNION SELECT must return exactly ${columnCount} expressions.`
+      tip = ` Indice : le SELECT de gauche renvoie ${columnCount} colonnes (${PRODUCT_COLUMNS.join(', ')}), donc chaque UNION SELECT doit renvoyer exactement ${columnCount} expressions.`
     } else if (err.kind === 'order-by') {
-      tip = ` Hint: use ORDER BY 1, ORDER BY 2, … until it errors — the last success is the column count (${columnCount}).`
+      tip = ` Indice : essayez ORDER BY 1, ORDER BY 2, … jusqu’à l’erreur — le dernier succès donne le nombre de colonnes (${columnCount}).`
     } else if (err.kind === 'syntax') {
-      tip = ' Hint: a lone quote or broken UNION often produces a syntax error — attackers use that feedback too.'
+      tip = ' Indice : une apostrophe seule ou un UNION cassé provoque souvent une erreur de syntaxe — les attaquants exploitent aussi ce retour.'
     } else if (err.kind === 'no-such-table') {
-      tip = ' Hint: EXISTS/IN subqueries against unknown tables fail — that is itself a useful oracle.'
+      tip = ' Indice : les sous-requêtes EXISTS/IN sur une table inconnue échouent — c’est en soi un oracle utile.'
     }
     return {
       query,
@@ -224,7 +251,7 @@ export function simulateSearch(input: string, vulnerable: boolean): SearchResult
       error: err.message,
       errorKind: err.kind,
       columnCount,
-      message: `Database error: ${err.message}.${tip}`,
+      message: `Erreur de base de données : ${err.message}. ${explainSqlErrorFr(err.kind)}${tip}`,
     }
   }
 }
@@ -285,10 +312,10 @@ export function simulateOrderLookup(input: string, vulnerable: boolean): OrderLo
       errorKind: null,
       columnCount,
       message: injectionDetected
-        ? 'Injection attempt neutralized — the order id is a bound parameter, so OR / JOIN / UNION never become SQL.'
+        ? 'Tentative d’injection neutralisée — le numéro de commande est un paramètre lié : OR / JOIN / UNION ne deviennent jamais du SQL.'
         : rows.length
-          ? `Found ${rows.length} order(s).`
-          : 'No order with that id.',
+          ? `${rows.length} commande(s) trouvée(s).`
+          : 'Aucune commande avec ce numéro.',
     }
   }
 
@@ -323,10 +350,10 @@ export function simulateOrderLookup(input: string, vulnerable: boolean): OrderLo
       errorKind: null,
       columnCount,
       message: highlight.length
-        ? `Injection widened the JOIN result — ${result.rows.length} row(s), including other users' orders and shipping addresses.`
+        ? `L’injection a élargi le résultat du JOIN — ${result.rows.length} ligne(s), dont les commandes et adresses de livraison d’autres utilisateurs.`
         : result.rows.length
-          ? `Query OK — ${result.rows.length} order row(s).`
-          : 'Query OK — 0 rows.',
+          ? `Requête OK — ${result.rows.length} commande(s).`
+          : 'Requête OK — 0 ligne.',
     }
   } catch (e) {
     const err = e instanceof SqlError ? e : new SqlError(String(e))
@@ -341,7 +368,7 @@ export function simulateOrderLookup(input: string, vulnerable: boolean): OrderLo
       error: err.message,
       errorKind: err.kind,
       columnCount,
-      message: `Database error: ${err.message}.`,
+      message: `Erreur de base de données : ${err.message}. ${explainSqlErrorFr(err.kind)}`,
     }
   }
 }
@@ -363,15 +390,15 @@ export interface BlindResult {
 }
 
 /**
- * Blind boolean lab reuses the product search page. A matching product ("Welcome")
+ * Blind boolean lab reuses the product search page. A matching product ("Bienvenue")
  * is the true-oracle; no rows means the injected condition was false (or an error).
  */
 export function simulateBlind(input: string, vulnerable: boolean): BlindResult {
   input = clampLength(input, LIMITS.sqlInput)
   const injectionDetected = detectInjection(input)
-  const base = simulateSearch(input.length ? input : 'Welcome', vulnerable)
+  const base = simulateSearch(input.length ? input : 'Bienvenue', vulnerable)
   // For the blind lab, start from a known hit unless the user already typed a full payload
-  const searchInput = input.includes("'") ? input : `Welcome${input}`
+  const searchInput = input.includes("'") ? input : `Bienvenue${input}`
   const r = input.includes("'") ? base : simulateSearch(searchInput, vulnerable)
   const matched = r.rows.length > 0 && !r.error
   return {
@@ -388,10 +415,10 @@ export function simulateBlind(input: string, vulnerable: boolean): BlindResult {
       ? r.message
       : matched
         ? r.vulnerable && injectionDetected
-          ? `Boolean oracle TRUE — ${r.rows.length} product row(s) returned (the injected condition held).`
+          ? `Oracle booléen VRAI — ${r.rows.length} produit(s) renvoyé(s) (la condition injectée est vraie).`
           : r.message
         : r.vulnerable && injectionDetected
-          ? 'Boolean oracle FALSE — 0 rows (the injected condition was false, or filtered everything out).'
+          ? 'Oracle booléen FAUX — 0 ligne (la condition injectée est fausse, ou a tout filtré).'
           : r.message,
   }
 }

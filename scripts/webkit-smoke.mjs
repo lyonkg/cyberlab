@@ -23,6 +23,18 @@ const MODULES = {
 }
 
 const results = []
+// French UI check: visible prose (code/pre/mono/inputs removed) must not contain common English words.
+const ENGLISH = /\b(the|and|with|your|you|click|press|enable|submit|next|correct|wrong|loading|search|password|lesson|lessons|start|reset|back|open|completed|rows?|found|error|attack|traffic|server|client|query|mark as)\b/gi
+const englishLeaks = new Map()
+const scanEnglish = async (where) => {
+  const text = await page.evaluate(() => {
+    const main = document.body.cloneNode(true)
+    main.querySelectorAll('code, pre, .font-mono, input, textarea, select, svg, script, style').forEach((n) => n.remove())
+    return main.innerText || main.textContent || ''
+  })
+  const hits = [...new Set((text.match(ENGLISH) || []).map((w) => w.toLowerCase()))]
+  if (hits.length) englishLeaks.set(where, hits)
+}
 const errors = []
 const ok = (name, pass, detail = '') => {
   results.push({ name, pass, detail })
@@ -51,20 +63,21 @@ console.log(`Engine: ${ENGINE} ${browser.version()}  base: ${BASE}  hash: ${HASH
 
 // 1. Main routes
 for (const [p, text] of [
-  ['/', 'Network Security'],
-  ['/labs', 'Labs'],
-  ['/progress', 'Progress'],
-  ['/tools', 'Network tools'],
+  ['/', 'Sécurité réseau'],
+  ['/labs', 'Labs pratiques'],
+  ['/progress', 'Votre progression'],
+  ['/tools', 'Lab des outils réseau'],
 ]) {
   await go(p)
   await page.waitForLoadState('networkidle')
   const body = await page.locator('main').innerText()
   ok(`route ${p}`, body.toLowerCase().includes(text.toLowerCase()), `${body.length} chars`)
+  await scanEnglish(`route ${p}`)
 }
 
 // 1b. In-app navigation through the header (BrowserRouter basename / HashRouter)
 await go('/')
-await page.locator('header nav').getByRole('link', { name: 'Progress' }).click()
+await page.locator('header nav').getByRole('link', { name: 'Progression' }).click()
 await page.waitForURL(/progress/)
 await page.locator('header nav').getByRole('link', { name: 'Labs' }).click()
 await page.waitForURL(/labs/)
@@ -97,18 +110,22 @@ for (const [mod, labs] of Object.entries(MODULES)) {
       .then(() => true)
       .catch(() => false)
     ok(`lab ${mod}/${labs[i]}`, visible)
+    await scanEnglish(`lab ${mod}/${labs[i]}`)
   }
   // Quiz tab renders
   await page.locator('main').getByRole('button', { name: 'Quiz', exact: true }).click()
   ok(`quiz ${mod}`, (await page.locator('main').innerText()).length > 200)
+  await scanEnglish(`quiz ${mod}`)
+  await page.locator('main').getByRole('button', { name: 'Leçons', exact: true }).click()
+  await scanEnglish(`lessons ${mod}`)
 }
 
 // 4. Animations
 await go('/modules/network')
 await page.locator('main').getByRole('button', { name: 'Labs', exact: true }).click()
-await page.locator('main').getByRole('button', { name: /Packet/ }).first().click()
-await page.getByRole('button', { name: 'Send packet' }).click()
-const animating = await page.getByRole('button', { name: 'Animating…' }).isVisible()
+await page.locator('main').getByRole('button', { name: /paquets/ }).first().click()
+await page.getByRole('button', { name: 'Envoyer un paquet' }).click()
+const animating = await page.getByRole('button', { name: 'Animation…' }).isVisible()
 await page.waitForTimeout(1500)
 const glowCount = await page.locator('[data-testid="lab-packet-flow"] .animate-pulse-glow').count()
 const animName = await page.evaluate(() => {
@@ -120,7 +137,7 @@ ok('packet flow animation runs', animating && glowCount > 0 && animName !== 'non
 await go('/modules/mitm')
 await page.locator('main').getByRole('button', { name: 'Labs', exact: true }).click()
 const mitmBefore = await page.getByTestId('lab-mitm').innerText()
-await page.getByRole('button', { name: 'Play', exact: true }).click()
+await page.getByRole('button', { name: 'Lecture', exact: true }).click()
 await page.waitForTimeout(2500)
 const mitmAfter = await page.getByTestId('lab-mitm').innerText()
 ok('MITM animation advances frames', mitmBefore !== mitmAfter)
@@ -130,7 +147,7 @@ await page.locator('main').getByRole('button', { name: 'Labs', exact: true }).cl
 const infected = () =>
   page.evaluate(() => document.querySelectorAll('[data-testid="lab-malware"] svg circle[fill*="f43f5e"], [data-testid="lab-malware"] svg circle[class*="rose"]').length)
 const svgBefore = await page.locator('[data-testid="lab-malware"] svg').innerHTML()
-await page.getByRole('button', { name: 'Start spread' }).click()
+await page.getByRole('button', { name: 'Lancer la propagation' }).click()
 // Spread is random (60 % per 800 ms tick) — poll up to 8 s for the SVG to change.
 let svgAfter = svgBefore
 for (let i = 0; i < 16 && svgAfter === svgBefore; i++) {
@@ -141,7 +158,7 @@ ok('malware spread animation updates SVG', svgBefore !== svgAfter, `infected-ish
 
 await go('/modules/ddos')
 await page.locator('main').getByRole('button', { name: 'Labs', exact: true }).click()
-await page.getByRole('button', { name: /Attack traffic/ }).click()
+await page.getByRole('button', { name: /Trafic d’attaque/ }).click()
 await page.waitForTimeout(3000)
 const paths = await page.locator('[data-testid="lab-ddos"] .recharts-area-area').count()
 const d = await page.locator('[data-testid="lab-ddos"] .recharts-area-area').first().getAttribute('d')
@@ -151,17 +168,17 @@ ok('DDoS Recharts chart renders + updates', paths >= 2 && !!d && d.length > 20, 
 await go('/modules/encryption')
 await page.locator('main').getByRole('button', { name: 'Labs', exact: true }).click()
 await page.locator('main').getByRole('button', { name: /AES/ }).first().click()
-await page.getByRole('button', { name: 'Encrypt', exact: true }).click()
-await page.getByText('Stored blob', { exact: false }).waitFor({ timeout: 20000 })
-await page.getByRole('button', { name: 'Decrypt', exact: true }).click()
+await page.getByRole('button', { name: 'Chiffrer', exact: true }).click()
+await page.getByText('Blob stocké', { exact: false }).waitFor({ timeout: 20000 })
+await page.getByRole('button', { name: 'Déchiffrer', exact: true }).click()
 const recovered = await page
-  .getByText('Recovered', { exact: true })
+  .getByText('Texte retrouvé', { exact: true })
   .waitFor({ timeout: 20000 })
   .then(() => true)
   .catch(() => false)
 ok('AES-256-GCM + PBKDF2 encrypt/decrypt roundtrip', recovered)
 await page.getByTestId('lab-aes').locator('input').nth(2).fill('wrong-pass')
-await page.getByRole('button', { name: 'Decrypt', exact: true }).click()
+await page.getByRole('button', { name: 'Déchiffrer', exact: true }).click()
 ok(
   'AES wrong passphrase rejected',
   await page
@@ -226,6 +243,8 @@ collecting = false
 await page.screenshot({ path: process.env.SHOT ?? 'docs/screenshots/10-webkit-safari.png', caret: 'initial' })
 await browser.close()
 
+console.log(`\nEnglish-word scan: ${englishLeaks.size} location(s) with hits`)
+for (const [where, hits] of englishLeaks) console.log(`  EN ${where}: ${hits.join(', ')}`)
 const failed = results.filter((r) => !r.pass)
 console.log(`\n${results.length - failed.length}/${results.length} checks passed; ${errors.length} console/page errors`)
 for (const e of errors) console.log('  ERR ' + e)

@@ -2,7 +2,7 @@ import { LIMITS, clampLength } from './validation'
 
 export interface PasswordStrength {
   score: number // 0-4
-  label: 'Very Weak' | 'Weak' | 'Fair' | 'Strong' | 'Very Strong'
+  label: 'Très faible' | 'Faible' | 'Moyen' | 'Fort' | 'Très fort'
   checks: { id: string; label: string; passed: boolean }[]
   entropyBits: number
 }
@@ -21,15 +21,15 @@ export function estimateEntropy(password: string): number {
 export function checkPasswordStrength(password: string): PasswordStrength {
   password = clampLength(password, LIMITS.password)
   const checks = [
-    { id: 'len8', label: 'At least 8 characters', passed: password.length >= 8 },
-    { id: 'len12', label: 'At least 12 characters', passed: password.length >= 12 },
-    { id: 'lower', label: 'Contains lowercase letter', passed: /[a-z]/.test(password) },
-    { id: 'upper', label: 'Contains uppercase letter', passed: /[A-Z]/.test(password) },
-    { id: 'digit', label: 'Contains a digit', passed: /[0-9]/.test(password) },
-    { id: 'special', label: 'Contains a special character', passed: /[^a-zA-Z0-9]/.test(password) },
+    { id: 'len8', label: 'Au moins 8 caractères', passed: password.length >= 8 },
+    { id: 'len12', label: 'Au moins 12 caractères', passed: password.length >= 12 },
+    { id: 'lower', label: 'Contient une minuscule', passed: /[a-z]/.test(password) },
+    { id: 'upper', label: 'Contient une majuscule', passed: /[A-Z]/.test(password) },
+    { id: 'digit', label: 'Contient un chiffre', passed: /[0-9]/.test(password) },
+    { id: 'special', label: 'Contient un caractère spécial', passed: /[^a-zA-Z0-9]/.test(password) },
     {
       id: 'nocommon',
-      label: 'Not a common password',
+      label: 'N’est pas un mot de passe courant',
       passed: !['password', '123456', 'qwerty', 'admin', 'letmein', 'welcome'].includes(
         password.toLowerCase(),
       ),
@@ -45,11 +45,11 @@ export function checkPasswordStrength(password: string): PasswordStrength {
   else score = 4
 
   const labels: PasswordStrength['label'][] = [
-    'Very Weak',
-    'Weak',
-    'Fair',
-    'Strong',
-    'Very Strong',
+    'Très faible',
+    'Faible',
+    'Moyen',
+    'Fort',
+    'Très fort',
   ]
   return { score, label: labels[score], checks, entropyBits }
 }

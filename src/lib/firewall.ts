@@ -51,14 +51,14 @@ export function evaluatePacket(rules: FirewallRule[], packet: Packet): FirewallD
       return {
         allowed: rule.action === 'allow',
         matchedRuleId: rule.id,
-        reason: `Matched rule ${rule.id}: ${rule.action.toUpperCase()} ${rule.protocol.toUpperCase()} ${rule.srcIp} → ${rule.dstIp}:${rule.dstPort}`,
+        reason: `Règle ${rule.id} appliquée : ${rule.action === 'allow' ? 'AUTORISER' : 'REFUSER'} ${rule.protocol.toUpperCase()} ${rule.srcIp} → ${rule.dstIp}:${rule.dstPort}`,
       }
     }
   }
   return {
     allowed: false,
     matchedRuleId: null,
-    reason: 'No matching rule — default DENY',
+    reason: 'Aucune règle ne correspond — REFUS par défaut',
   }
 }
 

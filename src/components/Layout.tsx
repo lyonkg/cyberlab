@@ -18,10 +18,10 @@ import { FullscreenButton } from './FullscreenButton'
 import { PercentBar } from './PercentBar'
 
 const nav = [
-  { to: '/', label: 'Home', icon: BookOpen },
+  { to: '/', label: 'Accueil', icon: BookOpen },
   { to: '/labs', label: 'Labs', icon: FlaskConical },
-  { to: '/progress', label: 'Progress', icon: Activity },
-  { to: '/tools', label: 'Tools', icon: Wrench },
+  { to: '/progress', label: 'Progression', icon: Activity },
+  { to: '/tools', label: 'Outils', icon: Wrench },
 ]
 
 export function Layout() {
@@ -72,7 +72,7 @@ export function Layout() {
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex flex-col items-end gap-0.5">
               <span className="text-[10px] uppercase tracking-wider text-slate-400">
-                Labs: {mode}
+                Labs : {mode === 'real' ? 'outils réels' : 'simulés'}
               </span>
               <PercentBar value={pct} className="w-24" />
             </div>
@@ -81,7 +81,7 @@ export function Layout() {
               type="button"
               className="md:hidden p-2 rounded-lg hover:bg-slate-800"
               onClick={() => setOpen((v) => !v)}
-              aria-label="Toggle menu"
+              aria-label="Ouvrir ou fermer le menu"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -126,7 +126,7 @@ export function Layout() {
       </main>
 
       <footer className="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        CyberLab — simulated environments only. Never attack systems you do not own or have permission to test.
+        CyberLab — environnements simulés uniquement. N’attaquez jamais un système qui ne vous appartient pas ou sans autorisation explicite.
       </footer>
     </div>
   )

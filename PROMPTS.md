@@ -29,3 +29,7 @@ L'utilisateur veut un lien pour Mac une fois le projet terminé. Livre CyberLab 
 ## Sixth request — Nov 21, 2026
 
 L'utilisateur veut accéder au zip Mac de CyberLab tout de suite. Publie cyberlab-mac.zip sur un lien téléchargeable public (par exemple GitHub Releases sur le dépôt lyonkg/cyberlab, ou GitHub Pages). Donne-moi l'URL directe du zip Mac dans ta réponse, pour que je puisse la transmettre à l'utilisateur. Si le dépôt n'existe pas encore, crée-le en public, pousse le code, active Pages si possible, et crée une release avec le zip Mac. Réponds avec le lien final dès qu'il est en ligne.
+
+## Seventh request — Nov 21, 2026
+
+L'utilisateur a ouvert CyberLab sur GitHub Pages et l'interface est entièrement en anglais. Il veut l'application en français. Traduis toute l'interface utilisateur en français : menus, titres des modules, labels des boutons, textes des labs, quiz, messages d'erreur, README et LISEZMOI-MAC.txt. Garde le code et les termes techniques en anglais si c'est plus clair, mais toute l'UI visible doit être en français. Republie le build mis à jour sur GitHub Pages et dans la release Mac, et confirme-moi que c'est en ligne.

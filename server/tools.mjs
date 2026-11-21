@@ -17,7 +17,7 @@ const TIMEOUT_MS = 8_000
 function timed(promise, ms = TIMEOUT_MS) {
   return Promise.race([
     promise,
-    new Promise((_, rej) => setTimeout(() => rej(new Error(`timed out after ${ms}ms`)), ms)),
+    new Promise((_, rej) => setTimeout(() => rej(new Error(`délai dépassé après ${ms} ms`)), ms)),
   ])
 }
 
@@ -44,14 +44,14 @@ export function tcpProbe(host, port = 443, ms = 3000) {
       resolve({ ok, ms: Date.now() - started, detail, method: `tcp/${port}` })
     }
     socket.setTimeout(ms)
-    socket.on('connect', () => done(true, 'connected'))
-    socket.on('timeout', () => done(false, 'timeout'))
+    socket.on('connect', () => done(true, 'connecté'))
+    socket.on('timeout', () => done(false, 'délai dépassé'))
     socket.on('error', (e) => done(false, e.message))
   })
 }
 
 export async function pingHost(host) {
-  if (!isSafeHost(host)) throw new Error('invalid host')
+  if (!isSafeHost(host)) throw new Error('hôte invalide')
   const bin = (await which('ping')) || (await which('ping6'))
   if (bin) {
     try {
@@ -73,7 +73,7 @@ export async function pingHost(host) {
         host,
         ok: probe.ok,
         method: 'tcp-fallback',
-        summary: `ICMP ping failed (${e.message}). TCP :443 probe ${probe.ok ? 'ok' : 'failed'} in ${probe.ms}ms (${probe.detail}).`,
+        summary: `Échec du ping ICMP (${e.message}). Sonde TCP :443 ${probe.ok ? 'réussie' : 'échouée'} en ${probe.ms} ms (${probe.detail}).`,
         raw: String(e.stderr || e.message || e),
       }
     }
@@ -83,13 +83,13 @@ export async function pingHost(host) {
     host,
     ok: probe.ok,
     method: 'tcp-fallback',
-    summary: `No ping binary. TCP :443 probe ${probe.ok ? 'ok' : 'failed'} in ${probe.ms}ms (${probe.detail}).`,
+    summary: `Pas de commande ping disponible. Sonde TCP :443 ${probe.ok ? 'réussie' : 'échouée'} en ${probe.ms} ms (${probe.detail}).`,
     raw: '',
   }
 }
 
 export async function tracerouteHost(host) {
-  if (!isSafeHost(host)) throw new Error('invalid host')
+  if (!isSafeHost(host)) throw new Error('hôte invalide')
   const bin = (await which('traceroute')) || (await which('tracepath'))
   if (bin) {
     try {
@@ -109,7 +109,7 @@ export async function tracerouteHost(host) {
         host,
         ok: probe.ok,
         method: 'tcp-fallback',
-        hops: `traceroute failed (${e.message}). TCP :443 ${probe.ok ? 'reachable' : 'unreachable'} in ${probe.ms}ms.`,
+        hops: `Échec de traceroute (${e.message}). TCP :443 ${probe.ok ? 'joignable' : 'injoignable'} en ${probe.ms} ms.`,
       }
     }
   }
@@ -118,12 +118,12 @@ export async function tracerouteHost(host) {
     host,
     ok: probe.ok,
     method: 'tcp-fallback',
-    hops: `No traceroute binary. TCP :443 ${probe.ok ? 'reachable' : 'unreachable'} in ${probe.ms}ms.`,
+    hops: `Pas de commande traceroute disponible. TCP :443 ${probe.ok ? 'joignable' : 'injoignable'} en ${probe.ms} ms.`,
   }
 }
 
 export async function dnsLookupHost(host) {
-  if (!isSafeHost(host)) throw new Error('invalid host')
+  if (!isSafeHost(host)) throw new Error('hôte invalide')
   const [a, aaaa, mx, primary] = await Promise.allSettled([
     resolve4(host),
     resolve6(host),
@@ -144,7 +144,7 @@ export async function dnsLookupHost(host) {
 }
 
 export async function inspectUrl(url) {
-  if (!isSafeHttpUrl(url)) throw new Error('invalid url')
+  if (!isSafeHttpUrl(url)) throw new Error('URL invalide')
   const u = new URL(url)
   const lib = u.protocol === 'https:' ? httpsRequest : httpRequest
   return timed(
@@ -189,7 +189,7 @@ export async function inspectUrl(url) {
       )
       req.on('timeout', () => {
         req.destroy()
-        reject(new Error('request timed out'))
+        reject(new Error('délai de requête dépassé'))
       })
       req.on('error', reject)
       req.end()
@@ -198,8 +198,8 @@ export async function inspectUrl(url) {
 }
 
 export async function checkPort(host, port) {
-  if (!isSafeHost(host)) throw new Error('invalid host')
-  if (!isSafePort(port)) throw new Error('invalid port')
+  if (!isSafeHost(host)) throw new Error('hôte invalide')
+  if (!isSafePort(port)) throw new Error('port invalide')
   const probe = await tcpProbe(host, Number(port))
   return { host, port: Number(port), ...probe }
 }

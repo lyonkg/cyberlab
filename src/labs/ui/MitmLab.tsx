@@ -4,15 +4,15 @@ import { useProgress } from '../../hooks/useProgress'
 type Mode = 'http' | 'https'
 
 const FRAMES_HTTP = [
-  { actor: 'Alice', text: 'GET /login  password=s3cret', mallory: 'I can read this!' },
-  { actor: 'Mallory', text: 'Forwarding… (maybe change password=evil)', mallory: 'Tampering…' },
-  { actor: 'Bob', text: '200 OK Set-Cookie: session=abc', mallory: 'Session cookie stolen' },
+  { actor: 'Alice', text: 'GET /login  password=s3cret', mallory: 'Je peux lire ça !' },
+  { actor: 'Mallory', text: 'Retransmission… (et pourquoi pas password=evil)', mallory: 'Modification en cours…' },
+  { actor: 'Bob', text: '200 OK Set-Cookie: session=abc', mallory: 'Cookie de session volé' },
 ]
 
 const FRAMES_HTTPS = [
-  { actor: 'Alice', text: 'TLS ClientHello + cert verify', mallory: 'Encrypted — cannot read' },
-  { actor: 'Bob', text: 'Certificate + Finished', mallory: 'Impersonation fails without valid cert' },
-  { actor: 'Alice', text: 'Encrypted Application Data', mallory: 'Only sees ciphertext' },
+  { actor: 'Alice', text: 'TLS ClientHello + vérification du certificat', mallory: 'Chiffré — illisible' },
+  { actor: 'Bob', text: 'Certificate + Finished', mallory: 'L’usurpation échoue sans certificat valide' },
+  { actor: 'Alice', text: 'Encrypted Application Data (données chiffrées)', mallory: 'Ne voit que du texte chiffré' },
 ]
 
 export function MitmLab() {
@@ -66,7 +66,7 @@ export function MitmLab() {
             onClick={start}
             className="px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 text-sm font-semibold"
           >
-            Play
+            Lecture
           </button>
         </div>
       </div>
@@ -89,7 +89,7 @@ export function MitmLab() {
               {name}
             </p>
             <p className="text-[10px] text-slate-500 mt-1">
-              {name === 'Mallory' ? 'attacker' : name === 'Alice' ? 'client' : 'server'}
+              {name === 'Mallory' ? 'attaquante' : name === 'Alice' ? 'cliente' : 'serveur'}
             </p>
           </div>
         ))}
@@ -104,8 +104,8 @@ export function MitmLab() {
 
       <p className="text-xs text-slate-400">
         {mode === 'http'
-          ? 'HTTP is cleartext — Mallory can read and modify anything on the path.'
-          : 'HTTPS authenticates Bob via certificates and encrypts the channel — Mallory sees only ciphertext.'}
+          ? 'HTTP circule en clair — Mallory peut tout lire et tout modifier sur le trajet.'
+          : 'HTTPS authentifie Bob grâce aux certificats et chiffre le canal — Mallory ne voit que du texte chiffré.'}
       </p>
     </div>
   )

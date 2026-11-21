@@ -2,9 +2,9 @@ import type { ModuleMeta } from '../../types'
 
 export const PHISHING_MODULE: ModuleMeta = {
     id: 'phishing',
-    title: 'Phishing Attacks',
+    title: 'Attaques de phishing',
     shortTitle: 'Phishing',
-    description: 'Spot malicious emails: spoofed senders, urgent language, lookalike domains, and shady links.',
+    description: 'Repérez les e-mails malveillants : expéditeurs usurpés, ton urgent, domaines sosies et liens douteux.',
     icon: 'Mail',
     path: '/modules/phishing',
     color: 'amber',
@@ -12,41 +12,41 @@ export const PHISHING_MODULE: ModuleMeta = {
     lessons: [
       {
         id: 'phish-intro',
-        title: 'Social engineering 101',
+        title: 'L’ingénierie sociale en bref',
         content:
-          'Phishing tricks humans, not protocols. Attackers impersonate trusted brands or coworkers, create urgency, and lure victims to fake login pages or malware downloads.',
+          'Le phishing piège les humains, pas les protocoles. Les attaquants se font passer pour des marques ou des collègues de confiance, créent un sentiment d’urgence et attirent les victimes vers de fausses pages de connexion ou des téléchargements de malware.',
       },
       {
         id: 'phish-signals',
-        title: 'Red flags',
+        title: 'Signaux d’alerte',
         content:
-          'Look for: mismatched display name vs address, lookalike domains (rnicrosoft.com), unexpected attachments, urgency/threats, links that go elsewhere than the visible text, and requests for secrets via email.',
+          'Repérez : un nom affiché qui ne correspond pas à l’adresse, des domaines sosies (rnicrosoft.com), des pièces jointes inattendues, l’urgence ou les menaces, des liens qui mènent ailleurs que le texte affiché, et les demandes de secrets par e-mail.',
       },
     ],
     quiz: [
       {
         id: 'pq1',
-        prompt: 'Hovering a link before clicking helps you:',
+        prompt: 'Survoler un lien avant de cliquer permet de :',
         choices: [
-          'Encrypt the email',
-          'See the real destination URL',
-          'Disable JavaScript',
-          'Update your antivirus',
+          'Chiffrer l’e-mail',
+          'Voir la véritable URL de destination',
+          'Désactiver JavaScript',
+          'Mettre à jour son antivirus',
         ],
         correctIndex: 1,
-        explanation: 'The status bar / tooltip shows where the link actually goes.',
+        explanation: 'La barre d’état ou l’infobulle montre où mène réellement le lien.',
       },
       {
         id: 'pq2',
-        prompt: 'A lookalike domain is dangerous because:',
+        prompt: 'Un domaine sosie est dangereux parce que :',
         choices: [
-          'It is always blocked by DNS',
-          'It can visually trick users into trusting a fake site',
-          'It uses AES',
-          'It only works on mobile',
+          'Il est toujours bloqué par le DNS',
+          'Il peut tromper visuellement l’utilisateur et lui faire croire à un site légitime',
+          'Il utilise AES',
+          'Il ne fonctionne que sur mobile',
         ],
         correctIndex: 1,
-        explanation: 'Slight character changes (0/O, rn/m) fool quick glances.',
+        explanation: 'De légers changements de caractères (0/O, rn/m) trompent un coup d’œil rapide.',
       },
     ],
 }

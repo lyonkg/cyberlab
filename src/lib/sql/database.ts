@@ -25,9 +25,9 @@ export interface Product {
 
 /** Demo "news / product" table used by the UNION and blind labs. Three columns. */
 export const DEMO_PRODUCTS: Product[] = [
-  { id: 1, title: 'Welcome', body: 'CyberLab news: simulated SQLi lessons are live.' },
-  { id: 2, title: 'Patch Tuesday', body: 'Remember to apply security updates promptly.' },
-  { id: 3, title: 'MFA rollout', body: 'Enable a second factor on every account you can.' },
+  { id: 1, title: 'Bienvenue', body: 'Actualités CyberLab : les leçons SQLi simulées sont en ligne.' },
+  { id: 2, title: 'Patch Tuesday', body: 'Pensez à appliquer rapidement les mises à jour de sécurité.' },
+  { id: 3, title: 'Déploiement MFA', body: 'Activez un second facteur sur tous les comptes possibles.' },
 ]
 
 export interface Order {
@@ -40,10 +40,10 @@ export interface Order {
 
 /** Orders joined to users in the order-lookup (JOIN) lab. */
 export const DEMO_ORDERS: Order[] = [
-  { id: 1001, user_id: 1, item: 'Hardware security key', total: 49, ship_to: '12 Rabbit Hole Ln' },
-  { id: 1002, user_id: 2, item: 'Cordless drill', total: 89, ship_to: '7 Scaffold St' },
-  { id: 1003, user_id: 3, item: 'Rack server', total: 1299, ship_to: '1 Admin Plaza' },
-  { id: 1004, user_id: 1, item: 'Privacy screen', total: 25, ship_to: '12 Rabbit Hole Ln' },
+  { id: 1001, user_id: 1, item: 'Clé de sécurité matérielle', total: 49, ship_to: '12 allée du Terrier' },
+  { id: 1002, user_id: 2, item: 'Perceuse sans fil', total: 89, ship_to: '7 rue des Chantiers' },
+  { id: 1003, user_id: 3, item: 'Serveur en rack', total: 1299, ship_to: '1 place des Admins' },
+  { id: 1004, user_id: 1, item: 'Filtre de confidentialité', total: 25, ship_to: '12 allée du Terrier' },
 ]
 
 /** A "hidden" table the lab UI never queries — attackers discover it with EXISTS/IN probes. */

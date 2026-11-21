@@ -33,27 +33,27 @@ export function HomePage() {
     <div className="space-y-10">
       <section className="relative overflow-hidden rounded-3xl border border-slate-700/60 bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/40 p-8 sm:p-10">
         <div className="relative z-10 max-w-2xl">
-          <p className="text-cyan-300 text-sm font-medium mb-2">Interactive cybersecurity academy</p>
+          <p className="text-cyan-300 text-sm font-medium mb-2">Académie interactive de cybersécurité</p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            Learn security by breaking (simulated) things safely
+            Apprenez la sécurité en cassant des choses (simulées) sans danger
           </h1>
           <p className="mt-4 text-slate-300 leading-relaxed">
-            Lessons, live attack simulations, network diagrams, crypto playgrounds, and quizzes — all
-            client-side. No paid API keys. Lab mode:{' '}
-            <span className="text-cyan-300 font-mono text-sm">{provider.mode}</span>.
+            Leçons, simulations d’attaques en direct, schémas réseau, ateliers de cryptographie et quiz — tout
+            tourne dans le navigateur. Aucune clé d’API payante. Mode des labs :{' '}
+            <span className="text-cyan-300 font-mono text-sm">{provider.mode === 'real' ? 'outils réels' : 'simulé'}</span>.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               to="/modules/network"
               className="px-4 py-2.5 rounded-xl bg-cyan-400 text-slate-950 font-semibold text-sm hover:bg-cyan-300"
             >
-              Start with Network Security
+              Commencer par la sécurité réseau
             </Link>
             <Link
               to="/labs"
               className="px-4 py-2.5 rounded-xl border border-slate-600 text-sm text-slate-200 hover:bg-slate-800"
             >
-              Browse all labs
+              Voir tous les labs
             </Link>
           </div>
         </div>
@@ -82,7 +82,7 @@ export function HomePage() {
                     <h3 className="font-semibold text-white">{m.title}</h3>
                     <p className="text-sm text-slate-400 mt-1 line-clamp-2">{m.description}</p>
                     <p className="text-[11px] text-slate-500 mt-3">
-                      {lessonsDone}/{m.lessons.length} lessons
+                      {lessonsDone}/{m.lessons.length} leçons
                       {quiz ? ` · quiz ${quiz.score}/${quiz.total}` : ''} · {m.labIds.length} labs
                     </p>
                   </div>
@@ -94,12 +94,13 @@ export function HomePage() {
       </section>
 
       <section className="glass rounded-2xl p-6 text-sm text-slate-300 space-y-2">
-        <h2 className="text-white font-semibold">How labs work</h2>
+        <h2 className="text-white font-semibold">Comment fonctionnent les labs</h2>
         <p>
-          Every lab talks to a <code className="text-cyan-300">LabProvider</code>. Default is{' '}
-          <strong>simulated</strong> (in-browser). Set <code className="text-cyan-300">VITE_LAB_MODE=real</code>{' '}
-          and implement stubs in <code className="text-cyan-300">src/labs/providers/real</code> to point at real
-          tooling later.
+          Chaque lab passe par un <code className="text-cyan-300">LabProvider</code>. Par défaut, le mode est{' '}
+          <strong>simulé</strong> (dans le navigateur). Le mode <strong>outils réels</strong> (ping, traceroute, DNS…)
+          s’active depuis la page <Link to="/tools" className="text-cyan-300 underline">Outils</Link> ou avec{' '}
+          <code className="text-cyan-300">VITE_LAB_MODE=real</code>, et nécessite le serveur local{' '}
+          <code className="text-cyan-300">npm run server</code>.
         </p>
       </section>
     </div>

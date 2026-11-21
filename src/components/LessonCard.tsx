@@ -14,7 +14,7 @@ export function LessonCard({ lesson, completed, onComplete }: Props) {
         <h3 className="text-lg font-semibold text-white">{lesson.title}</h3>
         {completed && (
           <span className="inline-flex items-center gap-1 text-xs text-emerald-300 bg-emerald-400/10 px-2 py-1 rounded-full">
-            <Check className="h-3 w-3" /> Done
+            <Check className="h-3 w-3" /> Lu
           </span>
         )}
       </div>
@@ -27,7 +27,7 @@ export function LessonCard({ lesson, completed, onComplete }: Props) {
           onClick={onComplete}
           className="mt-4 text-sm px-3 py-1.5 rounded-lg border border-cyan-500/40 text-cyan-300 hover:bg-cyan-400/10"
         >
-          Mark as read
+          Marquer comme lu
         </button>
       )}
     </article>

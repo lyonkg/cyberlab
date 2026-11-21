@@ -111,12 +111,12 @@ export function Quiz({ moduleId, questions, onComplete }: Props) {
             disabled={Object.keys(answers).length < questions.length}
             className="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-semibold text-sm disabled:opacity-40 hover:bg-cyan-400"
           >
-            Check answers
+            Vérifier mes réponses
           </button>
         ) : (
           <>
             <p className="text-sm text-slate-200">
-              Score:{' '}
+              Score :{' '}
               <span className="font-bold text-cyan-300">
                 {result?.score}/{result?.total}
               </span>{' '}
@@ -127,7 +127,7 @@ export function Quiz({ moduleId, questions, onComplete }: Props) {
               onClick={reset}
               className="px-3 py-2 rounded-lg border border-slate-600 text-sm hover:bg-slate-800"
             >
-              Retry quiz
+              Recommencer le quiz
             </button>
           </>
         )}

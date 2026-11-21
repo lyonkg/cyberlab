@@ -25,7 +25,7 @@ describe('lab mode + providers', () => {
     const r = await simulatedProvider.ping('example.com')
     expect(r.source).toBe('simulated')
     expect(r.ok).toBe(true)
-    expect(r.summary).toMatch(/simulated/i)
+    expect(r.summary).toMatch(/simulé/i)
   })
 
   it('real provider surfaces a clear error when the API is down', async () => {
@@ -35,7 +35,7 @@ describe('lab mode + providers', () => {
       vi.fn().mockRejectedValue(new TypeError('Failed to fetch')),
     )
     const p = getLabProvider()
-    await expect(p.ping('example.com')).rejects.toThrow(/unreachable|Lab API/i)
+    await expect(p.ping('example.com')).rejects.toThrow(/injoignable|API de lab/i)
   })
 
   it('real provider maps a successful ping response', async () => {

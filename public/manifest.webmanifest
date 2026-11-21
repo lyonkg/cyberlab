@@ -1,7 +1,7 @@
 {
   "name": "CyberLab",
   "short_name": "CyberLab",
-  "description": "Interactive cybersecurity learning platform",
+  "description": "Plateforme interactive d’apprentissage de la cybersécurité",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0f172a",
@@ -28,7 +28,7 @@
   ],
   "id": ".",
   "scope": ".",
-  "lang": "en",
+  "lang": "fr",
   "categories": [
     "education",
     "security"

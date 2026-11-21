@@ -12,32 +12,32 @@ export function ProgressPage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-white">Your Progress</h1>
-          <p className="text-slate-400 text-sm mt-1">Stored locally in your browser (localStorage).</p>
+          <h1 className="text-2xl font-bold text-white">Votre progression</h1>
+          <p className="text-slate-400 text-sm mt-1">Enregistrée localement dans votre navigateur (localStorage).</p>
         </div>
         <button
           type="button"
           onClick={() => {
-            if (confirm('Reset all progress?')) reset()
+            if (confirm('Réinitialiser toute la progression ?')) reset()
           }}
           className="px-3 py-1.5 rounded-lg border border-rose-500/40 text-rose-300 text-sm"
         >
-          Reset progress
+          Réinitialiser la progression
         </button>
       </div>
 
       <div className="glass rounded-2xl p-6">
         <div className="flex justify-between text-sm mb-2">
-          <span className="text-slate-300">Overall</span>
+          <span className="text-slate-300">Global</span>
           <span className="text-cyan-300 font-semibold">{pct}%</span>
         </div>
         <PercentBar value={pct} heightClass="h-3" />
 
         <div className="grid grid-cols-3 gap-3 mt-4 text-center text-sm">
-          <Stat label="Lessons" value={`${progress.completedLessons.length}/${totalLessonCount()}`} />
+          <Stat label="Leçons" value={`${progress.completedLessons.length}/${totalLessonCount()}`} />
           <Stat label="Labs" value={`${progress.completedLabs.length}/${totalLabCount()}`} />
           <Stat
-            label="Quizzes"
+            label="Quiz"
             value={`${Object.keys(progress.quizScores).length}/${totalQuizCount()}`}
           />
         </div>
@@ -50,10 +50,10 @@ export function ProgressPage() {
             <div key={m.id} className="glass rounded-xl p-4">
               <h2 className="font-medium text-white">{m.title}</h2>
               <p className="text-xs text-slate-400 mt-1">
-                Lessons:{' '}
+                Leçons :{' '}
                 {m.lessons.filter((l) => progress.completedLessons.includes(l.id)).length}/
                 {m.lessons.length}
-                {quiz ? ` · Quiz ${quiz.score}/${quiz.total}` : ' · Quiz not taken'}
+                {quiz ? ` · Quiz ${quiz.score}/${quiz.total}` : ' · Quiz non passé'}
               </p>
               <p className="text-xs text-slate-500 mt-1">
                 Labs:{' '}

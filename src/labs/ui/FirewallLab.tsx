@@ -26,7 +26,7 @@ export function FirewallLab() {
   return (
     <div className="space-y-4" data-testid="lab-firewall">
       <div className="flex items-center justify-between gap-2 flex-wrap">
-        <h3 className="font-semibold text-white">Firewall Rule Lab</h3>
+        <h3 className="font-semibold text-white">Lab des règles de pare-feu</h3>
         <button
           type="button"
           className="text-xs px-2 py-1 rounded border border-slate-600 hover:bg-slate-800"
@@ -34,11 +34,11 @@ export function FirewallLab() {
             completeLab('firewall')
           }}
         >
-          Mark lab complete
+          Marquer le lab comme terminé
         </button>
       </div>
       <p className="text-sm text-slate-400">
-        First-match evaluation. Edit rules, craft a packet, and see allow/deny live.
+        Évaluation « première correspondance ». Modifiez les règles, forgez un paquet et voyez la décision autoriser/refuser en direct.
       </p>
 
       <div className="overflow-x-auto rounded-xl border border-slate-700">
@@ -48,10 +48,10 @@ export function FirewallLab() {
               <th className="p-2">ID</th>
               <th className="p-2">Action</th>
               <th className="p-2">Proto</th>
-              <th className="p-2">Src</th>
-              <th className="p-2">Dst</th>
+              <th className="p-2">Source</th>
+              <th className="p-2">Destination</th>
               <th className="p-2">Port</th>
-              <th className="p-2">Dir</th>
+              <th className="p-2">Sens</th>
             </tr>
           </thead>
           <tbody>
@@ -66,8 +66,8 @@ export function FirewallLab() {
                       updateRule(r.id, { action: e.target.value as 'allow' | 'deny' })
                     }
                   >
-                    <option value="allow">allow</option>
-                    <option value="deny">deny</option>
+                    <option value="allow">autoriser</option>
+                    <option value="deny">refuser</option>
                   </select>
                 </td>
                 <td className="p-2">
@@ -137,7 +137,7 @@ export function FirewallLab() {
                   >
                     {['inbound', 'outbound', 'any'].map((d) => (
                       <option key={d} value={d}>
-                        {d}
+                        {d === 'inbound' ? 'entrant' : d === 'outbound' ? 'sortant' : 'tous'}
                       </option>
                     ))}
                   </select>
@@ -150,12 +150,12 @@ export function FirewallLab() {
 
       <div className="grid sm:grid-cols-2 gap-3">
         <div className="glass rounded-xl p-4 space-y-2">
-          <p className="text-sm font-medium text-slate-200">Craft packet</p>
+          <p className="text-sm font-medium text-slate-200">Forger un paquet</p>
           {(
             [
-              ['srcIp', 'Source IP'],
-              ['dstIp', 'Dest IP'],
-              ['dstPort', 'Dest port'],
+              ['srcIp', 'IP source'],
+              ['dstIp', 'IP destination'],
+              ['dstPort', 'Port destination'],
             ] as const
           ).map(([key, label]) => (
             <label key={key} className="block text-xs text-slate-400">
@@ -179,7 +179,7 @@ export function FirewallLab() {
             </label>
           ))}
           <label className="block text-xs text-slate-400">
-            Protocol
+            Protocole
             <select
               className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-sm"
               value={packet.protocol}
@@ -196,7 +196,7 @@ export function FirewallLab() {
             </select>
           </label>
           <label className="block text-xs text-slate-400">
-            Direction
+            Sens
             <select
               className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-sm"
               value={packet.direction}
@@ -207,8 +207,8 @@ export function FirewallLab() {
                 }))
               }
             >
-              <option value="inbound">inbound</option>
-              <option value="outbound">outbound</option>
+              <option value="inbound">entrant</option>
+              <option value="outbound">sortant</option>
             </select>
           </label>
         </div>
@@ -220,9 +220,9 @@ export function FirewallLab() {
               : 'bg-rose-500/10 border-rose-500/40'
           }`}
         >
-          <p className="text-xs uppercase tracking-wider text-slate-400 mb-1">Decision</p>
+          <p className="text-xs uppercase tracking-wider text-slate-400 mb-1">Décision</p>
           <p className="text-2xl font-bold">
-            {decision.allowed ? 'ALLOW' : 'DENY'}
+            {decision.allowed ? 'AUTORISÉ' : 'REFUSÉ'}
           </p>
           <p className="mt-2 text-sm text-slate-300 font-mono">{decision.reason}</p>
         </div>

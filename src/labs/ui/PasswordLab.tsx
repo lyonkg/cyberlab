@@ -13,9 +13,9 @@ export function PasswordLab() {
 
   return (
     <div className="space-y-4" data-testid="lab-password">
-      <h3 className="font-semibold text-white">Password Strength & MFA</h3>
+      <h3 className="font-semibold text-white">Robustesse du mot de passe et MFA</h3>
       <label className="block text-xs text-slate-400">
-        Try a password
+        Essayez un mot de passe
         <input
           type="text"
           className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono"
@@ -26,14 +26,14 @@ export function PasswordLab() {
             if (next.length >= 8) completeLab('password')
           }}
           maxLength={LIMITS.password}
-          placeholder="Type to evaluate…"
+          placeholder="Tapez pour évaluer…"
         />
       </label>
 
       <div>
         <div className="flex justify-between text-xs mb-1">
           <span className="text-slate-300">{strength.label}</span>
-          <span className="text-slate-500">~{strength.entropyBits} bits entropy</span>
+          <span className="text-slate-500">~{strength.entropyBits} bits d’entropie</span>
         </div>
         <div className="flex gap-1 h-2">
           {[0, 1, 2, 3, 4].map((i) => (
@@ -59,9 +59,9 @@ export function PasswordLab() {
       <label className="flex items-center gap-2 text-sm glass rounded-xl p-3 cursor-pointer">
         <input type="checkbox" checked={mfa} onChange={(e) => setMfa(e.target.checked)} />
         <span>
-          Enable MFA (TOTP / security key){' '}
+          Activer la MFA (TOTP / clé de sécurité){' '}
           <span className="text-slate-400">
-            — {mfa ? 'Attacker needs password AND second factor' : 'Password alone can be phished or leaked'}
+            — {mfa ? 'L’attaquant doit obtenir le mot de passe ET le second facteur' : 'Un mot de passe seul peut être hameçonné ou divulgué'}
           </span>
         </span>
       </label>

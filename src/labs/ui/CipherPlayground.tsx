@@ -11,7 +11,7 @@ import { LIMITS, clampLength } from '../../lib/validation'
 
 export function CipherPlayground() {
   const [mode, setMode] = useState<'caesar' | 'vigenere'>('caesar')
-  const [text, setText] = useState('Attack at dawn')
+  const [text, setText] = useState('Rendez-vous ce soir a minuit')
   const [shift, setShift] = useState(3)
   const [key, setKey] = useState('LEMON')
   const [direction, setDirection] = useState<'enc' | 'dec'>('enc')
@@ -32,13 +32,13 @@ export function CipherPlayground() {
   return (
     <div className="space-y-4" data-testid="lab-caesar">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">Classical Cipher Playground</h3>
+        <h3 className="font-semibold text-white">Atelier des chiffrements classiques</h3>
         <button
           type="button"
           className="text-xs px-2 py-1 rounded border border-slate-600"
           onClick={() => completeLab('caesar')}
         >
-          Mark lab complete
+          Marquer le lab comme terminé
         </button>
       </div>
 
@@ -52,7 +52,7 @@ export function CipherPlayground() {
               mode === m ? 'bg-violet-500/30 text-violet-200' : 'bg-slate-800 text-slate-400'
             }`}
           >
-            {m}
+            {m === 'caesar' ? 'César' : 'Vigenère'}
           </button>
         ))}
         {(['enc', 'dec'] as const).map((d) => (
@@ -64,13 +64,13 @@ export function CipherPlayground() {
               direction === d ? 'bg-cyan-500/30 text-cyan-200' : 'bg-slate-800 text-slate-400'
             }`}
           >
-            {d === 'enc' ? 'Encrypt' : 'Decrypt'}
+            {d === 'enc' ? 'Chiffrer' : 'Déchiffrer'}
           </button>
         ))}
       </div>
 
       <label className="block text-xs text-slate-400">
-        Input
+        Texte d’entrée
         <textarea
           className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm font-mono text-slate-100 min-h-[4rem]"
           value={text}
@@ -81,7 +81,7 @@ export function CipherPlayground() {
 
       {mode === 'caesar' ? (
         <label className="block text-xs text-slate-400">
-          Shift: {shift}
+          Décalage : {shift}
           <input
             type="range"
             min={0}
@@ -93,7 +93,7 @@ export function CipherPlayground() {
         </label>
       ) : (
         <label className="block text-xs text-slate-400">
-          Key
+          Clé
           <input
             className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 font-mono text-sm"
             value={key}
@@ -104,17 +104,17 @@ export function CipherPlayground() {
       )}
 
       <div className="glass rounded-xl p-4">
-        <p className="text-xs text-slate-400 mb-1">Output</p>
+        <p className="text-xs text-slate-400 mb-1">Résultat</p>
         <p className="font-mono text-cyan-200 break-all">{output || '—'}</p>
       </div>
 
       {cracks.length > 0 && (
         <div className="glass rounded-xl p-4">
-          <p className="text-xs text-slate-400 mb-2">Auto-crack suggestions (by English score)</p>
+          <p className="text-xs text-slate-400 mb-2">Suggestions de cassage automatique (score de fréquence des lettres)</p>
           <ul className="space-y-1 text-sm font-mono">
             {cracks.map((c) => (
               <li key={c.shift} className="text-slate-300">
-                <span className="text-violet-300">shift {c.shift}</span>: {c.plaintext}
+                <span className="text-violet-300">décalage {c.shift}</span>: {c.plaintext}
               </li>
             ))}
           </ul>

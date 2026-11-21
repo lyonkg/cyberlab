@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useProgress } from '../../hooks/useProgress'
 
 const STEPS = [
-  { from: 'Client', to: 'Server', flag: 'SYN', desc: 'Client picks ISN and requests connection' },
-  { from: 'Server', to: 'Client', flag: 'SYN+ACK', desc: 'Server acknowledges and sends its ISN' },
-  { from: 'Client', to: 'Server', flag: 'ACK', desc: 'Client acknowledges — connection established' },
+  { from: 'Client', to: 'Server', flag: 'SYN', desc: 'Le client choisit son ISN et demande la connexion' },
+  { from: 'Server', to: 'Client', flag: 'SYN+ACK', desc: 'Le serveur accuse réception et envoie son ISN' },
+  { from: 'Client', to: 'Server', flag: 'ACK', desc: 'Le client accuse réception — connexion établie' },
 ]
 
 export function TcpHandshakeLab() {
@@ -24,14 +24,14 @@ export function TcpHandshakeLab() {
   return (
     <div className="space-y-4" data-testid="lab-tcp-handshake">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">TCP Three-Way Handshake</h3>
+        <h3 className="font-semibold text-white">Handshake TCP en trois temps</h3>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={reset}
             className="px-3 py-1.5 rounded-lg border border-slate-600 text-sm"
           >
-            Reset
+            Réinitialiser
           </button>
           <button
             type="button"
@@ -39,7 +39,7 @@ export function TcpHandshakeLab() {
             disabled={step >= STEPS.length - 1}
             className="px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 text-sm font-semibold disabled:opacity-40"
           >
-            {step < 0 ? 'Start' : 'Next segment'}
+            {step < 0 ? 'Démarrer' : 'Segment suivant'}
           </button>
         </div>
       </div>
@@ -64,7 +64,7 @@ export function TcpHandshakeLab() {
           ))}
         </div>
         <div className="glass rounded-xl p-4 text-center">
-          <p className="text-sm font-semibold text-violet-300">Server</p>
+          <p className="text-sm font-semibold text-violet-300">Serveur</p>
           <p className="text-xs text-slate-400 mt-1">ISN = 5000</p>
         </div>
       </div>

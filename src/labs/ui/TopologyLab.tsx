@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 
 const NODES = [
   { id: 'inet', x: 50, y: 20, label: 'Internet', color: '#64748b' },
-  { id: 'fw', x: 50, y: 45, label: 'Firewall', color: '#f43f5e' },
-  { id: 'router', x: 50, y: 65, label: 'Router', color: '#22d3ee' },
+  { id: 'fw', x: 50, y: 45, label: 'Pare-feu', color: '#f43f5e' },
+  { id: 'router', x: 50, y: 65, label: 'Routeur', color: '#22d3ee' },
   { id: 'web', x: 25, y: 88, label: 'Web :443', color: '#34d399' },
-  { id: 'db', x: 50, y: 88, label: 'DB :5432', color: '#a78bfa' },
+  { id: 'db', x: 50, y: 88, label: 'BDD :5432', color: '#a78bfa' },
   { id: 'admin', x: 75, y: 88, label: 'Admin', color: '#fbbf24' },
 ]
 
@@ -28,9 +28,9 @@ export function TopologyLab() {
 
   return (
     <div className="space-y-3" data-testid="lab-topology">
-      <h3 className="font-semibold text-white">Interactive Network Topology</h3>
+      <h3 className="font-semibold text-white">Topologie réseau interactive</h3>
       <p className="text-sm text-slate-400">
-        Segmented LAN behind a firewall. Only published services should be reachable from the Internet.
+        Réseau local segmenté derrière un pare-feu. Seuls les services publiés doivent être joignables depuis Internet.
       </p>
       <svg viewBox="0 0 100 100" className="w-full max-h-80 rounded-xl bg-slate-950/60 border border-slate-700">
         {EDGES.map(([a, b]) => (

@@ -2,9 +2,9 @@ import type { ModuleMeta } from '../../types'
 
 export const MITM_MODULE: ModuleMeta = {
     id: 'mitm',
-    title: 'Man-in-the-Middle',
+    title: 'Attaque de l’homme du milieu (MITM)',
     shortTitle: 'MITM',
-    description: 'Alice, Bob, and Mallory — see what happens on HTTP vs HTTPS.',
+    description: 'Alice, Bob et Mallory : voyez ce qui se passe en HTTP et en HTTPS.',
     icon: 'Eye',
     path: '/modules/mitm',
     color: 'fuchsia',
@@ -12,41 +12,41 @@ export const MITM_MODULE: ModuleMeta = {
     lessons: [
       {
         id: 'mitm-intro',
-        title: 'Sitting in the middle',
+        title: 'Se placer au milieu',
         content:
-          'A MITM attacker intercepts communication between two parties. On open Wi-Fi or compromised routers, cleartext HTTP can be read or modified. TLS (HTTPS) authenticates the server and encrypts the channel.',
+          'Un attaquant MITM intercepte la communication entre deux parties. Sur un Wi-Fi ouvert ou un routeur compromis, le HTTP en clair peut être lu ou modifié. TLS (HTTPS) authentifie le serveur et chiffre le canal.',
       },
       {
         id: 'mitm-tls',
-        title: 'How TLS helps',
+        title: 'Comment TLS protège',
         content:
-          'Certificates bind a public key to a domain (validated by CAs). Clients verify the cert chain and hostname. Encrypted sessions stop passive eavesdropping; cert checks stop many active impersonations.',
+          'Les certificats lient une clé publique à un domaine (validés par des autorités de certification). Le client vérifie la chaîne de certificats et le nom d’hôte. Les sessions chiffrées empêchent l’écoute passive ; la vérification des certificats bloque de nombreuses usurpations actives.',
       },
     ],
     quiz: [
       {
         id: 'mitmq1',
-        prompt: 'On plain HTTP, a network MITM can typically:',
+        prompt: 'En HTTP simple, un MITM sur le réseau peut généralement :',
         choices: [
-          'Only see metadata, never bodies',
-          'Read and modify request/response bodies',
-          'Nothing — HTTP is end-to-end encrypted',
-          'Only attack UDP',
+          'Voir seulement les métadonnées, jamais le contenu',
+          'Lire et modifier le contenu des requêtes et des réponses',
+          'Rien — HTTP est chiffré de bout en bout',
+          'Attaquer uniquement UDP',
         ],
         correctIndex: 1,
-        explanation: 'HTTP is cleartext on the wire.',
+        explanation: 'HTTP circule en clair sur le réseau.',
       },
       {
         id: 'mitmq2',
-        prompt: 'HTTPS uses certificates primarily to:',
+        prompt: 'HTTPS utilise des certificats surtout pour :',
         choices: [
-          'Compress images',
-          'Authenticate the server (and enable encrypted session keys)',
-          'Block all ads',
-          'Replace passwords',
+          'Compresser les images',
+          'Authentifier le serveur (et permettre des clés de session chiffrées)',
+          'Bloquer toutes les publicités',
+          'Remplacer les mots de passe',
         ],
         correctIndex: 1,
-        explanation: 'Certs prove you are talking to the real server before deriving session keys.',
+        explanation: 'Le certificat prouve que vous parlez au vrai serveur avant de dériver les clés de session.',
       },
     ],
 }

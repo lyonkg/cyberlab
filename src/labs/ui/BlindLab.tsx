@@ -4,29 +4,29 @@ import { useProgress } from '../../hooks/useProgress'
 
 const PAYLOADS = [
   {
-    label: "SUBSTR = 's' (true)",
+    label: "SUBSTR = 's' (vrai)",
     input: "' AND (SELECT SUBSTR(password,1,1) FROM users WHERE username='admin')='s' --",
-    note: "admin's password starts with s → rows returned",
+    note: 'Le mot de passe d’admin commence par s → des lignes sont renvoyées',
   },
   {
-    label: "SUBSTR = 'x' (false)",
+    label: "SUBSTR = 'x' (faux)",
     input: "' AND (SELECT SUBSTR(password,1,1) FROM users WHERE username='admin')='x' --",
-    note: 'Wrong guess → 0 rows (boolean oracle false)',
+    note: 'Mauvaise supposition → 0 ligne (oracle booléen faux)',
   },
   {
     label: 'EXISTS api_keys',
     input: "' AND EXISTS(SELECT 1 FROM api_keys) --",
-    note: 'Hidden table exists → true',
+    note: 'La table cachée existe → vrai',
   },
   {
     label: 'EXISTS secrets',
     input: "' AND EXISTS(SELECT 1 FROM secrets) --",
-    note: 'Missing table → error (also an oracle)',
+    note: 'Table absente → erreur (c’est aussi un oracle)',
   },
   {
     label: 'IN (admins)',
     input: "' AND 'admin' IN (SELECT username FROM users WHERE role='admin') --",
-    note: 'IN subquery confirms a value is present',
+    note: 'La sous-requête IN confirme qu’une valeur est présente',
   },
 ]
 
@@ -49,7 +49,7 @@ export function BlindLab() {
   return (
     <div className="space-y-4" data-testid="lab-sqli-blind">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">Subquery / Blind Boolean Lab</h3>
+        <h3 className="font-semibold text-white">Lab sous-requêtes / injection booléenne à l’aveugle</h3>
         <label className="flex items-center gap-2 text-sm cursor-pointer">
           <input
             type="checkbox"
@@ -60,15 +60,15 @@ export function BlindLab() {
             }}
           />
           <span className={vulnerable ? 'text-rose-300' : 'text-emerald-300'}>
-            {vulnerable ? 'Vulnerable (string concat)' : 'Safe (parameterized)'}
+            {vulnerable ? 'Vulnérable (concaténation de chaînes)' : 'Sécurisé (requête paramétrée)'}
           </span>
         </label>
       </div>
       <p className="text-sm text-slate-400">
-        Same product-search page as the UNION lab, but the payload asks a yes/no question with a scalar
-        subquery, <code className="text-cyan-300">EXISTS</code>, or <code className="text-cyan-300">IN
-        (SELECT …)</code>. Rows returned ⇒ true; zero rows ⇒ false. Attackers walk{' '}
-        <code className="text-cyan-300">SUBSTR(password, i, 1)</code> character by character.
+        Même page de recherche de produits que le lab UNION, mais le payload pose une question oui/non avec une
+        sous-requête scalaire, <code className="text-cyan-300">EXISTS</code> ou <code className="text-cyan-300">IN
+        (SELECT …)</code>. Des lignes renvoyées ⇒ vrai ; aucune ligne ⇒ faux. Les attaquants parcourent{' '}
+        <code className="text-cyan-300">SUBSTR(password, i, 1)</code> caractère par caractère.
       </p>
       <div className="flex flex-wrap gap-2">
         {PAYLOADS.map((p) => (
@@ -91,7 +91,7 @@ export function BlindLab() {
         className="glass rounded-xl p-4 space-y-3 max-w-xl"
       >
         <label className="block text-xs text-slate-400">
-          Search / payload
+          Recherche / payload
           <input
             className="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono"
             value={input}
@@ -103,7 +103,7 @@ export function BlindLab() {
           />
         </label>
         <button type="submit" className="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold">
-          Probe
+          Sonder
         </button>
       </form>
       {result && (
@@ -126,13 +126,13 @@ export function BlindLab() {
             }`}
           >
             <p className="font-semibold mb-1">
-              Oracle:{' '}
-              {result.error ? 'ERROR' : result.oracleTrue ? 'TRUE (rows returned)' : 'FALSE (0 rows)'}
+              Oracle :{' '}
+              {result.error ? 'ERREUR' : result.oracleTrue ? 'VRAI (lignes renvoyées)' : 'FAUX (0 ligne)'}
             </p>
             {result.message}
           </div>
           {result.rows.length > 0 && (
-            <p className="text-xs text-slate-500">{result.rows.length} product row(s) visible to the attacker.</p>
+            <p className="text-xs text-slate-500">{result.rows.length} produit(s) visible(s) par l’attaquant.</p>
           )}
         </div>
       )}

@@ -11,10 +11,10 @@ export function LabsOverviewPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Hands-on Labs</h1>
+        <h1 className="text-2xl font-bold text-white">Labs pratiques</h1>
         <p className="text-slate-400 mt-2 text-sm max-w-2xl">
-          All labs run through the <strong className="text-slate-200">{provider.name}</strong> (
-          {provider.mode}). {provider.description}
+          Tous les labs passent par le <strong className="text-slate-200">{provider.name}</strong> (
+          {provider.mode === 'real' ? 'outils réels' : 'simulé'}). {provider.description}
         </p>
       </div>
 
@@ -24,7 +24,7 @@ export function LabsOverviewPage() {
             <div className="flex items-center justify-between gap-2 mb-3">
               <h2 className="font-semibold text-white">{m.title}</h2>
               <Link to={m.path} className="text-xs text-cyan-300 hover:underline">
-                Open module →
+                Ouvrir le module →
               </Link>
             </div>
             <ul className="grid sm:grid-cols-2 gap-2">
@@ -36,7 +36,7 @@ export function LabsOverviewPage() {
                   >
                     <span className="text-slate-200">{LAB_TITLES[labId] ?? labId}</span>
                     <span className="text-[10px] text-slate-500">
-                      {progress.completedLabs.includes(labId) ? 'completed' : 'open'}
+                      {progress.completedLabs.includes(labId) ? 'terminé' : 'à faire'}
                     </span>
                   </Link>
                 </li>

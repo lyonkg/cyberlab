@@ -54,13 +54,13 @@ export function DDoSLab() {
   return (
     <div className="space-y-4" data-testid="lab-ddos">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">DDoS Traffic Simulator</h3>
+        <h3 className="font-semibold text-white">Simulateur de trafic DDoS</h3>
         <span
           className={`text-xs px-2 py-1 rounded-full ${
             healthy ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'
           }`}
         >
-          {healthy ? 'Service OK' : 'Degraded / overloaded'}
+          {healthy ? 'Service OK' : 'Dégradé / surchargé'}
         </span>
       </div>
 
@@ -71,21 +71,22 @@ export function DDoSLab() {
             <XAxis dataKey="t" stroke="#64748b" tick={{ fontSize: 10 }} />
             <YAxis stroke="#64748b" tick={{ fontSize: 10 }} />
             <Tooltip
+              labelFormatter={(t) => `Seconde ${t}`}
               contentStyle={{ background: '#0f172a', border: '1px solid #334155', fontSize: 12 }}
             />
-            <Area type="monotone" dataKey="rps" name="Inbound RPS" stroke="#f97316" fill="#f9731633" />
-            <Area type="monotone" dataKey="served" name="Served RPS" stroke="#22d3ee" fill="#22d3ee33" />
+            <Area type="monotone" dataKey="rps" name="Requêtes/s entrantes" stroke="#f97316" fill="#f9731633" />
+            <Area type="monotone" dataKey="served" name="Requêtes/s servies" stroke="#22d3ee" fill="#22d3ee33" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Toggle label="Attack traffic" on={attack} onChange={setAttack} danger />
-        <Toggle label="Rate limiting" on={rateLimit} onChange={setRateLimit} />
-        <Toggle label="CDN / anycast absorb" on={cdn} onChange={setCdn} />
+        <Toggle label="Trafic d’attaque" on={attack} onChange={setAttack} danger />
+        <Toggle label="Limitation de débit" on={rateLimit} onChange={setRateLimit} />
+        <Toggle label="Absorption CDN / anycast" on={cdn} onChange={setCdn} />
       </div>
       <p className="text-xs text-slate-400">
-        Toggle an attack, then enable mitigations. Orange = inbound flood; cyan = what the origin can serve.
+        Lancez une attaque, puis activez les contre-mesures. Orange = flot entrant ; cyan = ce que le serveur d’origine peut servir.
       </p>
     </div>
   )
@@ -114,7 +115,7 @@ function Toggle({
           : 'border-slate-600 text-slate-400'
       }`}
     >
-      {label}: {on ? 'ON' : 'OFF'}
+      {label} : {on ? 'ACTIVÉ' : 'DÉSACTIVÉ'}
     </button>
   )
 }

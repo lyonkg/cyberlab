@@ -137,7 +137,7 @@ export function resolveLabApiUrl(
 ): URL {
   if (!isAllowedLabApiBase(base)) {
     throw new Error(
-      'Refusing lab API base: only an https:// URL (no credentials) or a same-origin path is allowed.',
+      'Adresse de base de l’API de lab refusée : seule une URL https:// (sans identifiants), un chemin de même origine ou http://127.0.0.1 / localhost est autorisé.',
     )
   }
   const trimmed = base.trim()
@@ -149,16 +149,16 @@ export function resolveLabApiUrl(
 
   const p = path.trim()
   if (!p || p.startsWith('//') || /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(p)) {
-    throw new Error('Refusing absolute or protocol-bearing lab API path.')
+    throw new Error('Chemin d’API de lab refusé : chemin absolu ou avec protocole.')
   }
 
   const baseHref = baseUrl.href.endsWith('/') ? baseUrl.href : `${baseUrl.href}/`
   const resolved = new URL(p.replace(/^\//, ''), baseHref)
   if (resolved.origin !== baseUrl.origin) {
-    throw new Error('Refusing lab API URL that changes origin.')
+    throw new Error('URL d’API de lab refusée : elle change d’origine.')
   }
   if (baseUrl.protocol === 'https:' && resolved.protocol !== 'https:') {
-    throw new Error('Refusing non-HTTPS lab API URL.')
+    throw new Error('URL d’API de lab refusée : elle n’est pas en HTTPS.')
   }
   return resolved
 }

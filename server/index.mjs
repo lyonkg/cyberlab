@@ -34,7 +34,7 @@ function readJson(req) {
     req.on('data', (c) => {
       size += c.length
       if (size > 4096) {
-        reject(new Error('body too large'))
+        reject(new Error('corps de requête trop volumineux'))
         req.destroy()
         return
       }
@@ -59,13 +59,13 @@ function q(url, key) {
 const server = http.createServer(async (req, res) => {
   const ip = req.socket.remoteAddress || 'unknown'
   if (req.method === 'OPTIONS') return json(res, 204, {})
-  if (!rateLimit(ip)) return json(res, 429, { error: 'rate limit exceeded' })
+  if (!rateLimit(ip)) return json(res, 429, { error: 'trop de requêtes (limite : 30 par minute)' })
 
   let url
   try {
     url = new URL(req.url || '/', `http://${HOST}:${PORT}`)
   } catch {
-    return json(res, 400, { error: 'bad url' })
+    return json(res, 400, { error: 'URL de requête invalide' })
   }
 
   try {
@@ -78,37 +78,37 @@ const server = http.createServer(async (req, res) => {
 
     if (url.pathname === '/ping' && (req.method === 'GET' || req.method === 'POST')) {
       const host = (body.host || q(url, 'host') || '').trim()
-      if (!isSafeHost(host)) return json(res, 400, { error: 'invalid host' })
+      if (!isSafeHost(host)) return json(res, 400, { error: 'hôte invalide' })
       return json(res, 200, await pingHost(host))
     }
     if (url.pathname === '/traceroute' && (req.method === 'GET' || req.method === 'POST')) {
       const host = (body.host || q(url, 'host') || '').trim()
-      if (!isSafeHost(host)) return json(res, 400, { error: 'invalid host' })
+      if (!isSafeHost(host)) return json(res, 400, { error: 'hôte invalide' })
       return json(res, 200, await tracerouteHost(host))
     }
     if (url.pathname === '/dns' && (req.method === 'GET' || req.method === 'POST')) {
       const host = (body.host || q(url, 'host') || '').trim()
-      if (!isSafeHost(host)) return json(res, 400, { error: 'invalid host' })
+      if (!isSafeHost(host)) return json(res, 400, { error: 'hôte invalide' })
       return json(res, 200, await dnsLookupHost(host))
     }
     if (url.pathname === '/headers' && (req.method === 'GET' || req.method === 'POST')) {
       const target = (body.url || q(url, 'url') || '').trim()
-      if (!isSafeHttpUrl(target)) return json(res, 400, { error: 'invalid url' })
+      if (!isSafeHttpUrl(target)) return json(res, 400, { error: 'URL invalide (http:// ou https:// uniquement)' })
       return json(res, 200, await inspectUrl(target))
     }
     if (url.pathname === '/port' && (req.method === 'GET' || req.method === 'POST')) {
       const host = (body.host || q(url, 'host') || '').trim()
       const port = body.port ?? q(url, 'port')
-      if (!isSafeHost(host) || !isSafePort(port)) return json(res, 400, { error: 'invalid host or port' })
+      if (!isSafeHost(host) || !isSafePort(port)) return json(res, 400, { error: 'hôte ou port invalide' })
       return json(res, 200, await checkPort(host, port))
     }
 
-    return json(res, 404, { error: 'not found' })
+    return json(res, 404, { error: 'route introuvable' })
   } catch (e) {
     return json(res, 500, { error: e instanceof Error ? e.message : String(e) })
   }
 })
 
 server.listen(PORT, HOST, () => {
-  console.log(`CyberLab lab API listening on http://${HOST}:${PORT}`)
+  console.log(`API de lab CyberLab à l’écoute sur http://${HOST}:${PORT}`)
 })

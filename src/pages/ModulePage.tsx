@@ -18,7 +18,7 @@ export function ModulePage() {
   const tabs = useMemo(
     () =>
       [
-        { id: 'lessons' as const, label: 'Lessons' },
+        { id: 'lessons' as const, label: 'Leçons' },
         { id: 'labs' as const, label: 'Labs' },
         { id: 'quiz' as const, label: 'Quiz' },
       ] as const,
@@ -28,9 +28,9 @@ export function ModulePage() {
   if (!mod) {
     return (
       <div className="text-center py-20">
-        <p className="text-slate-300">Module not found.</p>
+        <p className="text-slate-300">Module introuvable.</p>
         <Link to="/" className="text-cyan-300 text-sm mt-2 inline-block">
-          Back home
+          Retour à l’accueil
         </Link>
       </div>
     )

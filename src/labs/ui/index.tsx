@@ -30,13 +30,13 @@ const LAB_MAP: Record<string, LazyExoticComponent<ComponentType>> = {
 export function LabRenderer({ labId }: { labId: string }) {
   const Comp = LAB_MAP[labId]
   const frame = useRef<HTMLDivElement>(null)
-  if (!Comp) return <p className="text-sm text-rose-300">Unknown lab.</p>
+  if (!Comp) return <p className="text-sm text-rose-300">Lab inconnu.</p>
   return (
     <div ref={frame} className="lab-frame glass rounded-2xl p-5 relative">
       <div className="flex justify-end -mt-2 -mr-2 mb-1">
         <FullscreenButton target={frame} testId="lab-fullscreen-toggle" showLabel />
       </div>
-      <Suspense fallback={<p className="text-sm text-slate-400">Loading lab…</p>}>
+      <Suspense fallback={<p className="text-sm text-slate-400">Chargement du lab…</p>}>
         <Comp />
       </Suspense>
     </div>

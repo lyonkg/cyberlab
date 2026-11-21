@@ -2,9 +2,9 @@ import type { ModuleMeta } from '../../types'
 
 export const DDOS_MODULE: ModuleMeta = {
     id: 'ddos',
-    title: 'DDoS Attacks',
+    title: 'Attaques DDoS',
     shortTitle: 'DDoS',
-    description: 'Live traffic simulation with rate limiting and CDN-style mitigation toggles.',
+    description: 'Simulation de trafic en direct avec limitation de débit et protection de type CDN activables.',
     icon: 'Activity',
     path: '/modules/ddos',
     color: 'orange',
@@ -12,36 +12,36 @@ export const DDOS_MODULE: ModuleMeta = {
     lessons: [
       {
         id: 'ddos-intro',
-        title: 'Overwhelming availability',
+        title: 'Saturer la disponibilité',
         content:
-          'Distributed Denial of Service floods a target with traffic or requests so legitimate users cannot get service. Volumetric, protocol, and application-layer floods are common classes.',
+          'Un déni de service distribué (DDoS) inonde une cible de trafic ou de requêtes pour que les utilisateurs légitimes ne soient plus servis. Les attaques volumétriques, protocolaires et applicatives en sont les grandes familles.',
       },
       {
         id: 'ddos-mitigation',
-        title: 'Mitigations',
+        title: 'Contre-mesures',
         content:
-          'Rate limiting, anycast/CDN absorption, SYN cookies, bot challenges, and upstream filtering reduce impact. Capacity planning alone is rarely enough against large botnets.',
+          'Limitation de débit (rate limiting), absorption par anycast/CDN, SYN cookies, défis anti-bots et filtrage en amont réduisent l’impact. Le dimensionnement seul suffit rarement face à de grands botnets.',
       },
     ],
     quiz: [
       {
         id: 'dq1',
-        prompt: 'DDoS primarily targets which security property?',
-        choices: ['Confidentiality', 'Integrity', 'Availability', 'Non-repudiation'],
+        prompt: 'Quelle propriété de sécurité un DDoS vise-t-il d’abord ?',
+        choices: ['Confidentialité', 'Intégrité', 'Disponibilité', 'Non-répudiation'],
         correctIndex: 2,
-        explanation: 'The “A” in CIA — keep the service down or unusable.',
+        explanation: 'Le « D » de la triade DIC (CIA en anglais) : rendre le service indisponible ou inutilisable.',
       },
       {
         id: 'dq2',
-        prompt: 'A CDN helps against volumetric DDoS mainly by:',
+        prompt: 'Un CDN aide contre un DDoS volumétrique surtout en :',
         choices: [
-          'Storing passwords',
-          'Absorbing and distributing traffic across many edge nodes',
-          'Disabling TCP',
-          'Removing the need for TLS',
+          'Stockant les mots de passe',
+          'Absorbant et répartissant le trafic sur de nombreux nœuds en périphérie',
+          'Désactivant TCP',
+          'Rendant TLS inutile',
         ],
         correctIndex: 1,
-        explanation: 'Anycast/CDN spreads load so no single origin is overwhelmed as easily.',
+        explanation: 'L’anycast/CDN répartit la charge : aucun serveur d’origine n’est submergé aussi facilement.',
       },
     ],
 }

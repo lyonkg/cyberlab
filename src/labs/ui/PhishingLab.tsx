@@ -17,36 +17,36 @@ interface EmailSample {
 const EMAILS: EmailSample[] = [
   {
     id: 'e1',
-    fromName: 'PayPal Security',
+    fromName: 'Sécurité PayPal',
     fromAddr: 'security@paypa1-secure.com',
-    subject: 'Urgent: Confirm your account within 24 hours',
-    body: 'We detected unusual activity. Click below to verify your identity or your account will be limited.',
+    subject: 'Urgent : confirmez votre compte sous 24 heures',
+    body: 'Nous avons détecté une activité inhabituelle. Cliquez ci-dessous pour vérifier votre identité, sinon votre compte sera limité.',
     linkDisplay: 'https://www.paypal.com/verify',
     linkReal: 'https://paypa1-secure.com/login',
     isPhish: true,
-    clues: ['Lookalike domain paypa1', 'Urgent threat language', 'Link text ≠ real URL'],
+    clues: ['Domaine sosie : paypa1', 'Ton urgent et menaçant', 'Texte du lien ≠ vraie URL'],
   },
   {
     id: 'e2',
     fromName: 'GitHub',
     fromAddr: 'noreply@github.com',
-    subject: '[GitHub] A new public key was added to your account',
-    body: 'A new SSH key was added. If this was you, no action is needed. Review your keys in Settings → SSH keys.',
+    subject: '[GitHub] Une nouvelle clé publique a été ajoutée à votre compte',
+    body: 'Une nouvelle clé SSH a été ajoutée. Si c’était vous, aucune action n’est nécessaire. Vérifiez vos clés dans Settings → SSH keys.',
     linkDisplay: 'https://github.com/settings/keys',
     linkReal: 'https://github.com/settings/keys',
     isPhish: false,
-    clues: ['Legitimate domain', 'No credential ask', 'Link matches destination'],
+    clues: ['Domaine légitime', 'Aucune demande d’identifiants', 'Le lien correspond à la destination'],
   },
   {
     id: 'e3',
-    fromName: 'IT Helpdesk',
+    fromName: 'Support informatique',
     fromAddr: 'helpdesk@corprnail.com',
-    subject: 'Password expire today - reset now',
-    body: 'Your corporate password expires in 2 hours. Reset here immediately to avoid lockout.',
+    subject: 'Votre mot de passe expire aujourd’hui - réinitialisez maintenant',
+    body: 'Votre mot de passe professionnel expire dans 2 heures. Réinitialisez-le ici immédiatement pour éviter le blocage.',
     linkDisplay: 'https://intranet.company.com/reset',
     linkReal: 'http://192.168.99.23/steal',
     isPhish: true,
-    clues: ['Misspelled sender domain', 'Raw IP link', 'Artificial urgency'],
+    clues: ['Domaine d’expéditeur mal orthographié', 'Lien vers une adresse IP brute', 'Urgence artificielle'],
   },
 ]
 
@@ -73,22 +73,22 @@ export function PhishingLab() {
   return (
     <div className="space-y-4" data-testid="lab-phishing">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">Spot the Phish</h3>
+        <h3 className="font-semibold text-white">Repérer le phishing</h3>
         <span className="text-xs text-slate-400">
-          Score {score.right}/{score.total} · Email {idx + 1}/{EMAILS.length}
+          Score {score.right}/{score.total} · E-mail {idx + 1}/{EMAILS.length}
         </span>
       </div>
 
       <div className="glass rounded-xl overflow-hidden">
         <div className="bg-slate-900/80 px-4 py-3 border-b border-slate-700 text-sm space-y-1">
           <p>
-            <span className="text-slate-500">From:</span>{' '}
+            <span className="text-slate-500">De :</span>{' '}
             <span className="text-slate-200">
               {email.fromName} &lt;{email.fromAddr}&gt;
             </span>
           </p>
           <p>
-            <span className="text-slate-500">Subject:</span>{' '}
+            <span className="text-slate-500">Objet :</span>{' '}
             <span className="text-slate-200">{email.subject}</span>
           </p>
         </div>
@@ -103,7 +103,7 @@ export function PhishingLab() {
               {email.linkDisplay}
             </span>
             <span className="block text-[11px] text-slate-500 mt-1 font-mono">
-              hover target → {isSafeHttpUrlForDisplay(email.linkReal) ? email.linkReal : '(blocked URL)'}
+              cible au survol → {isSafeHttpUrlForDisplay(email.linkReal) ? email.linkReal : '(URL bloquée)'}
             </span>
           </p>
         </div>
@@ -124,7 +124,7 @@ export function PhishingLab() {
           disabled={guess !== null}
           className="px-4 py-2 rounded-lg bg-emerald-500/80 text-slate-950 text-sm font-semibold disabled:opacity-40"
         >
-          Legitimate
+          Légitime
         </button>
         {guess !== null && (
           <button
@@ -132,7 +132,7 @@ export function PhishingLab() {
             onClick={next}
             className="px-4 py-2 rounded-lg border border-slate-600 text-sm"
           >
-            Next email
+            E-mail suivant
           </button>
         )}
       </div>
@@ -146,8 +146,8 @@ export function PhishingLab() {
           }`}
         >
           <p className="font-semibold mb-1">
-            {guess === email.isPhish ? 'Correct!' : 'Not quite.'} This is{' '}
-            {email.isPhish ? 'phishing' : 'legitimate'}.
+            {guess === email.isPhish ? 'Bonne réponse !' : 'Pas tout à fait.'} Cet e-mail est{' '}
+            {email.isPhish ? 'du phishing' : 'légitime'}.
           </p>
           <ul className="list-disc list-inside text-slate-300">
             {email.clues.map((c) => (

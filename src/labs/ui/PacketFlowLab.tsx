@@ -5,9 +5,9 @@ type Hop = 'client' | 'router' | 'firewall' | 'server'
 const HOPS: Hop[] = ['client', 'router', 'firewall', 'server']
 const LABELS: Record<Hop, string> = {
   client: 'Client',
-  router: 'Router',
-  firewall: 'Firewall',
-  server: 'Server',
+  router: 'Routeur',
+  firewall: 'Pare-feu',
+  server: 'Serveur',
 }
 
 export function PacketFlowLab() {
@@ -20,14 +20,14 @@ export function PacketFlowLab() {
     if (!running) return
     if (hop >= HOPS.length - 1) {
       setRunning(false)
-      setLog((l) => [...l, '✓ Packet delivered to server (HTTPS :443)'])
+      setLog((l) => [...l, '✓ Paquet remis au serveur (HTTPS :443)'])
       completeLab('packet-flow')
       return
     }
     const t = setTimeout(() => {
       const from = HOPS[hop]
       const to = HOPS[hop + 1]
-      setLog((l) => [...l, `→ Forward ${from} → ${to}`])
+      setLog((l) => [...l, `→ Transfert ${LABELS[from]} → ${LABELS[to]}`])
       setHop((h) => h + 1)
     }, 700)
     return () => clearTimeout(t)
@@ -35,21 +35,21 @@ export function PacketFlowLab() {
 
   const start = () => {
     setHop(0)
-    setLog(['◆ Client sends HTTPS request'])
+    setLog(['◆ Le client envoie une requête HTTPS'])
     setRunning(true)
   }
 
   return (
     <div className="space-y-4" data-testid="lab-packet-flow">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h3 className="font-semibold text-white">Packet Flow Animation</h3>
+        <h3 className="font-semibold text-white">Animation du flux de paquets</h3>
         <button
           type="button"
           onClick={start}
           disabled={running}
           className="px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 text-sm font-semibold disabled:opacity-40"
         >
-          {running ? 'Animating…' : 'Send packet'}
+          {running ? 'Animation…' : 'Envoyer un paquet'}
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export function PacketFlowLab() {
 
       <div className="glass rounded-xl p-3 font-mono text-xs text-slate-300 space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
         {log.length === 0 ? (
-          <p className="text-slate-500">Press “Send packet” to animate Client → Router → Firewall → Server.</p>
+          <p className="text-slate-500">Cliquez sur « Envoyer un paquet » pour animer Client → Routeur → Pare-feu → Serveur.</p>
         ) : (
           log.map((line, i) => <div key={i}>{line}</div>)
         )}
